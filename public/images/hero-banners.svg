@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="hero-banners.svg">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F3E60"/><stop offset="1" stop-color="#2E88C7"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0B1620" flood-opacity="0.25"/></filter>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F6"/><stop offset="0.5" stop-color="#C7D0D4"/><stop offset="1" stop-color="#9AA6AC"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2">
+  <circle cx="150" cy="640" r="130"/><circle cx="1090" cy="130" r="230"/><circle cx="980" cy="720" r="90"/>
+</g>
+<circle cx="130" cy="150" r="52" fill="#E4795B" opacity="0.9"/>
+<rect x="90" y="700" width="180" height="16" rx="8" fill="#E4795B" opacity="0.85"/>
+<g transform="translate(520,120) scale(1.95)"><ellipse cx="200" cy="258" rx="130" ry="13" fill="#0B1620" opacity="0.10"/>
+<rect x="197" y="70" width="6" height="172" fill="#5F6C72" opacity="0.8"/>
+<g filter="url(#sh)"><rect x="130" y="52" width="140" height="184" rx="5" fill="#FFFFFF" stroke="#E2E6E8" stroke-width="2"/></g>
+<rect x="130" y="52" width="140" height="46" fill="#1E6FA9"/>
+<rect x="146" y="66" width="80" height="8" rx="4" fill="#FFFFFF" opacity="0.95"/>
+<rect x="146" y="80" width="54" height="6" rx="3" fill="#FFFFFF" opacity="0.7"/>
+<circle cx="200" cy="134" r="26" fill="#E4795B" opacity="0.9"/>
+<path d="M191 134 L198 142 L211 124" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#C9D2D8"><rect x="148" y="176" width="104" height="7" rx="3.5"/><rect x="148" y="190" width="104" height="7" rx="3.5"/><rect x="162" y="204" width="76" height="7" rx="3.5"/></g>
+<rect x="130" y="222" width="140" height="14" fill="#1E6FA9"/>
+<rect x="118" y="240" width="164" height="16" rx="8" fill="#14507E"/></g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="hoodie">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2F4F5"/><stop offset="1" stop-color="#DEE3E5"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#0B1620" flood-opacity="0.22"/></filter>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F6"/><stop offset="0.5" stop-color="#C7D0D4"/><stop offset="1" stop-color="#9AA6AC"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  
+</defs>
+<rect width="400" height="300" fill="url(#bg)"/>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.35">
+  <circle cx="360" cy="46" r="70" stroke-width="2"/>
+  <circle cx="42" cy="260" r="54" stroke-width="2"/>
+</g>
+<ellipse cx="200" cy="258" rx="112" ry="13" fill="#0B1620" opacity="0.10"/>
+<g filter="url(#sh)"><path d="M142 62 L100 92 L86 192 L126 202 L142 172 L142 252 L258 252 L258 172 L274 202 L314 192 L300 92 L258 62 L240 72 L200 104 L160 72 Z" fill="#5F6C72"/></g>
+<path d="M152 74 Q152 30 200 30 Q248 30 248 74 L248 100 Q200 124 152 100 Z" fill="#3F4B52"/>
+<path d="M192 110 L188 154" stroke="#E4795B" stroke-width="6" stroke-linecap="round"/>
+<path d="M208 110 L212 154" stroke="#E4795B" stroke-width="6" stroke-linecap="round"/>
+<path d="M164 196 L236 196 L246 238 L154 238 Z" fill="#3F4B52" opacity="0.35"/>
+<rect x="160" y="120" width="80" height="64" rx="7" fill="#E4795B" opacity="0.9"/>
+<circle cx="200" cy="152" r="15" fill="#FFFFFF" opacity="0.95"/>
+</svg>

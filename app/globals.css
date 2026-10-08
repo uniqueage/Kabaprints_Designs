@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+
+  --color-ink: #101a24;
+  --color-ink-soft: #3d4b58;
+  --color-muted: #64717d;
+
+  --color-brand: #1e6fa9;
+  --color-brand-dark: #14507e;
+  --color-brand-deep: #0e3b5c;
+  --color-brand-mid: #2e88c7;
+  --color-brand-light: #e9f2f9;
+
+  --color-coral: #e4795b;
+  --color-coral-dark: #c8603f;
+  --color-coral-light: #fbede7;
+
+  --color-silver: #96a1a6;
+  --color-silver-dark: #5f6c72;
+  --color-silver-light: #d8dde0;
+
+  --color-cream: #f8f6f2;
+  --color-whatsapp: #25d366;
+}
+
+:root { color-scheme: light; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--color-brand); color: #fff; }
+
+:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+
+/* ---- animations ---- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes kenburns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.12); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgb(37 211 102 / 0.45); }
+  70% { box-shadow: 0 0 0 14px rgb(37 211 102 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(37 211 102 / 0); }
+}
+
+.animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-marquee { animation: marquee 38s linear infinite; }
+.animate-float { animation: float-y 5s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
+.slide-active .kb { animation: kenburns 9s ease-out both; }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-fade-up, .animate-marquee, .animate-float, .animate-pulse-ring, .slide-active .kb { animation: none !important; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

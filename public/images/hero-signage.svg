@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="hero-signage.svg">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14507E"/><stop offset="1" stop-color="#1E6FA9"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0B1620" flood-opacity="0.25"/></filter>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F6"/><stop offset="0.5" stop-color="#C7D0D4"/><stop offset="1" stop-color="#9AA6AC"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2">
+  <circle cx="150" cy="640" r="130"/><circle cx="1090" cy="130" r="230"/><circle cx="980" cy="720" r="90"/>
+</g>
+<circle cx="130" cy="150" r="52" fill="#E3B24C" opacity="0.9"/>
+<rect x="90" y="700" width="180" height="16" rx="8" fill="#E3B24C" opacity="0.85"/>
+<g transform="translate(520,120) scale(1.95)"><ellipse cx="200" cy="258" rx="140" ry="13" fill="#0B1620" opacity="0.10"/>
+<rect x="86" y="196" width="16" height="62" rx="4" fill="#5F6C72"/>
+<rect x="298" y="196" width="16" height="62" rx="4" fill="#5F6C72"/>
+<g filter="url(#sh)"><rect x="54" y="66" width="292" height="130" rx="12" fill="#1E6FA9"/></g>
+<rect x="68" y="80" width="264" height="102" rx="7" fill="none" stroke="#E3B24C" stroke-width="4"/>
+<text x="200" y="126" font-family="sans-serif" font-size="34" font-weight="800" letter-spacing="4" fill="#FFFFFF" text-anchor="middle">YOUR SHOP</text>
+<text x="200" y="156" font-family="sans-serif" font-size="15" letter-spacing="5" fill="#FFFFFF" opacity="0.85" text-anchor="middle">SALES &amp; SERVICES</text>
+<g><circle cx="96" cy="56" r="9" fill="#E3B24C"/><circle cx="200" cy="56" r="9" fill="#E3B24C"/><circle cx="304" cy="56" r="9" fill="#E3B24C"/></g></g>
+</svg>

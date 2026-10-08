@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="picture framing">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F9F7F3"/><stop offset="1" stop-color="#EBE6DE"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#0B1620" flood-opacity="0.22"/></filter>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F6"/><stop offset="0.5" stop-color="#C7D0D4"/><stop offset="1" stop-color="#9AA6AC"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  
+</defs>
+<rect width="400" height="300" fill="url(#bg)"/>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.35">
+  <circle cx="360" cy="46" r="70" stroke-width="2"/>
+  <circle cx="42" cy="260" r="54" stroke-width="2"/>
+</g>
+<ellipse cx="200" cy="254" rx="126" ry="13" fill="#0B1620" opacity="0.10"/>
+<g filter="url(#sh)">
+  <rect x="96" y="42" width="208" height="168" rx="5" fill="#5E4128"/>
+  <rect x="106" y="52" width="188" height="148" rx="3" fill="#8A6242"/>
+  <rect x="118" y="64" width="164" height="124" fill="#FFFFFF"/>
+</g>
+<rect x="124" y="70" width="152" height="112" fill="#DCEEFB"/>
+<circle cx="242" cy="100" r="18" fill="#E3B24C"/>
+<path d="M124 170 L166 126 L196 158 L224 132 L276 178 L276 182 L124 182 Z" fill="#1E6FA9" opacity="0.85"/>
+<g filter="url(#sh)"><rect x="146" y="220" width="108" height="32" rx="6" fill="url(#metal)"/></g>
+<rect x="160" y="229" width="80" height="6" rx="3" fill="#6C767C"/>
+<rect x="172" y="241" width="56" height="5" rx="2.5" fill="#8B949A"/>
+</svg>

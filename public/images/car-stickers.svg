@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="car stickers">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F9F7F3"/><stop offset="1" stop-color="#EBE6DE"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#0B1620" flood-opacity="0.22"/></filter>
+  <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2F5F6"/><stop offset="0.5" stop-color="#C7D0D4"/><stop offset="1" stop-color="#9AA6AC"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  
+</defs>
+<rect width="400" height="300" fill="url(#bg)"/>
+<g fill="none" stroke="#FFFFFF" stroke-opacity="0.35">
+  <circle cx="360" cy="46" r="70" stroke-width="2"/>
+  <circle cx="42" cy="260" r="54" stroke-width="2"/>
+</g>
+<ellipse cx="200" cy="236" rx="145" ry="13" fill="#0B1620" opacity="0.10"/>
+<g filter="url(#sh)"><path d="M56 194 L58 166 Q60 152 76 148 L118 140 L154 112 Q166 102 186 102 L266 102 Q288 102 302 116 L330 144 L348 152 Q360 157 360 172 L360 190 Q360 200 350 200 L66 200 Q56 200 56 194 Z" fill="#E4795B"/></g>
+<path d="M126 140 L164 112 Q172 106 186 106 L258 106 Q276 106 288 118 L312 140 Z" fill="#BBD9EE"/>
+<rect x="222" y="106" width="6" height="34" fill="#E4795B"/>
+<path d="M74 176 C134 162 244 192 348 168" stroke="#1E6FA9" stroke-width="11" fill="none" stroke-linecap="round"/>
+<rect x="344" y="156" width="14" height="9" rx="4" fill="#E3B24C"/>
+<circle cx="120" cy="200" r="27" fill="#1B2731"/><circle cx="120" cy="200" r="13" fill="#8C979E"/>
+<circle cx="300" cy="200" r="27" fill="#1B2731"/><circle cx="300" cy="200" r="13" fill="#8C979E"/>
+</svg>

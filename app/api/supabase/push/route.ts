@@ -37,15 +37,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseEnv, isSupabaseConfigured } from "@/lib/supabase/env";
 
-// Re-run the migration logic from scripts/push-schema.mjs inline, but against
-// the environment available to this server route (Vercel). We import the
-// migration files directly and execute them via the Supabase SQL API.
 import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const MIGRATIONS_DIR = join(__dirname, "../../../../supabase/migrations");
+
+// The migrations live at <project-root>/supabase/migrations. In a Vercel build
+// the function root is <project-root>/.next/standalone OR the build output
+// dir; __dirname for this route resolves to …/.next/server/app/api/supabase/push/route.js
+// (or the standalone equivalent). Walk up to the project root by locating the
+// supabase/migrations dir.
+function findMigrationsDir() {
+  // Start from the route's own dir and walk up, looking for supabase/migrations.
+  let dir = __dirname;
+  for (let i = 0; i < 10; i++) {
+    const candidate = join(dir, "supabase", "migrations");
+    try {
+      const entries = readdirSync(candidate);
+      if (entries.some((n) => n.endsWith(".sql"))) {
+        return candidate;
+      }
+    } catch {
+      // not here
+    }
+    dir = join(dir, "..");
+  }
+  // Fallback: relative to __dirname (works when the route sits next to the
+  // built output that preserves the repo layout, e.g. some dev/standalone setups).
+  return join(__dirname, "../../../../supabase/migrations");
+}
+
+const MIGRATIONS_DIR = findMigrationsDir();
 
 function loadMigration(name: string) {
   return readFileSync(join(MIGRATIONS_DIR, name), "utf8");
@@ -83,7 +106,6 @@ async function pushSchema(url: string, serviceRoleKey: string): Promise<{ succes
     if (!ok) break;
   }
 
-  // Counts after push (best effort)
   const counts: Record<string, number> = {};
   const countQueries: Array<[string, string]> = [
     ["services", "SELECT COUNT(*) AS c FROM public.services"],
@@ -115,11 +137,7 @@ async function pushSchema(url: string, serviceRoleKey: string): Promise<{ succes
     }
   }
 
-  return {
-    success: steps.every((s) => s.ok),
-    steps,
-    counts,
-  };
+  return { success: steps.every((s) => s.ok), steps, counts };
 }
 
 const PUSH_SECRET_HEADER = "x-supabase-push-secret";
@@ -151,9 +169,7 @@ export async function POST(request: NextRequest) {
         steps: result.steps.map((s) => ({ file: s.name, ok: s.ok, detail: s.detail })),
         counts: result.counts,
       },
-      {
-        status: result.success ? 200 : 500,
-      }
+      { status: result.success ? 200 : 500 }
     );
   } catch (err) {
     return NextResponse.json(
@@ -164,8 +180,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  // Health/readiness: report whether the route is live and Supabase is configured,
-  // without performing any mutation.
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ configured: false, message: "Supabase env not set." }, { status: 503 });
   }

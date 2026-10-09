@@ -170,6 +170,9 @@ export default function Header() {
                 <circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" />
               </svg>
             </Link>
+            <Link href="/admin" className="rounded-full border border-silver-light px-4 py-2 text-sm font-bold text-ink transition hover:border-brand hover:text-brand">
+              Admin
+            </Link>
             <Link href="/sign-in" className="rounded-full border border-silver-light px-4 py-2 text-sm font-bold text-ink transition hover:border-brand hover:text-brand">
               Sign In
             </Link>
@@ -234,6 +237,9 @@ export default function Header() {
               ))}
             </nav>
             <div className="mt-5 flex flex-col gap-3">
+              <Link href="/admin" className="rounded-full border border-silver-light px-5 py-3 text-center font-bold text-ink hover:border-brand hover:text-brand">
+                Admin
+              </Link>
               <Link href="/sign-in" className="rounded-full border border-silver-light px-5 py-3 text-center font-bold text-ink hover:border-brand hover:text-brand">
                 Sign In
               </Link>

@@ -36,8 +36,11 @@ export async function middleware(request: NextRequest) {
   await supabase.auth.getUser().catch(() => {});
 
   // Protect the admin section: only signed-in admins may enter.
+  // The sign-in page itself must stay publicly reachable so unauthenticated
+  // users can sign in — exclude it from the admin gate.
   const adminPath = /^\/admin(\/|$)/;
-  if (adminPath.test(request.nextUrl.pathname)) {
+  const isSignInPage = request.nextUrl.pathname === "/admin/sign-in";
+  if (adminPath.test(request.nextUrl.pathname) && !isSignInPage) {
     const { data: { user } } = await supabase.auth.getUser().catch(() => ({
       data: { user: null },
     }));
@@ -58,7 +61,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(signInUrl);
     }
   }
-
   return supabaseResponse;
 }
 

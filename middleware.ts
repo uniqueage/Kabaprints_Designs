@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseEnv } from "@/lib/supabase/env";
 
 export async function middleware(request: NextRequest) {
+// --- admin-gate fix v2 (exclude /admin/sign-in from admin gate) ---
   const env = getSupabaseEnv();
   if (!env?.NEXT_PUBLIC_SUPABASE_URL || !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next();

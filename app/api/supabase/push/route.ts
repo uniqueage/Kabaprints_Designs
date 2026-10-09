@@ -8,9 +8,8 @@
  *   SUPABASE_SERVICE_ROLE_KEY  (server only)
  *   NEXT_PUBLIC_SUPABASE_URL   (public)
  *
- * This is the recommended activation path when you DO NOT have the service
- * role key in your local shell: deploy the site to Vercel first (so the env
- * vars are available), then call this endpoint once to provision the project.
+ * The migration SQL is inlined at build time (see migrations-bundle.ts) so the
+ * deployed function does not depend on the filesystem at runtime.
  *
  * SECURITY:
  *  - The endpoint is protected by a shared secret header
@@ -36,46 +35,24 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseEnv, isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  MIGRATION_FILES,
+  MIGRATION_0001_schema_sql,
+  MIGRATION_0002_rls_policies_sql,
+  MIGRATION_0003_seed_sql,
+} from "./migrations-bundle";
 
-import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+const MIGRATIONS_DIR = ""; // unused; SQL is inlined
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// The migrations live at <project-root>/supabase/migrations. In a Vercel build
-// the function root is <project-root>/.next/standalone OR the build output
-// dir; __dirname for this route resolves to …/.next/server/app/api/supabase/push/route.js
-// (or the standalone equivalent). Walk up to the project root by locating the
-// supabase/migrations dir.
-function findMigrationsDir() {
-  // Start from the route's own dir and walk up, looking for supabase/migrations.
-  let dir = __dirname;
-  for (let i = 0; i < 10; i++) {
-    const candidate = join(dir, "supabase", "migrations");
-    try {
-      const entries = readdirSync(candidate);
-      if (entries.some((n) => n.endsWith(".sql"))) {
-        return candidate;
-      }
-    } catch {
-      // not here
-    }
-    dir = join(dir, "..");
-  }
-  // Fallback: relative to __dirname (works when the route sits next to the
-  // built output that preserves the repo layout, e.g. some dev/standalone setups).
-  return join(__dirname, "../../../../supabase/migrations");
-}
-
-const MIGRATIONS_DIR = findMigrationsDir();
-
-function loadMigration(name: string) {
-  return readFileSync(join(MIGRATIONS_DIR, name), "utf8");
+function loadMigration(name: string): string {
+  if (name === "0001_schema.sql") return MIGRATION_0001_schema_sql;
+  if (name === "0002_rls_policies.sql") return MIGRATION_0002_rls_policies_sql;
+  if (name === "0003_seed.sql") return MIGRATION_0003_seed_sql;
+  throw new Error(`Unknown migration: ${name}`);
 }
 
 function migrationFiles(): string[] {
-  return readdirSync(MIGRATIONS_DIR).filter((n) => n.endsWith(".sql")).sort();
+  return MIGRATION_FILES;
 }
 
 async function execSql(url: string, serviceRoleKey: string, sql: string): Promise<{ ok: boolean; body: string }> {

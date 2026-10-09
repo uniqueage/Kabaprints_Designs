@@ -3,9 +3,17 @@
 -- Project: https://ccabevypxuwzpbagkiji.supabase.co
 -- ============================================================
 
-CREATE TYPE IF NOT EXISTS public.order_status AS ENUM (
-  'draft','submitted','reviewing','quoted','approved','in_production','ready','shipped','delivered','cancelled'
-);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_type WHERE typname = 'order_status' AND typnamespace = 'public'::regnamespace
+  ) THEN
+    CREATE TYPE public.order_status AS ENUM (
+      'draft','submitted','reviewing','quoted','approved','in_production','ready','shipped','delivered','cancelled'
+    );
+  END IF;
+END
+$$;
 
 -- profiles (extends auth.users)
 CREATE TABLE IF NOT EXISTS public.profiles (

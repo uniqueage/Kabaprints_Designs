@@ -123,14 +123,14 @@ ON CONFLICT DO NOTHING;
 -- printable_materials
 INSERT INTO public.printable_materials (id, name, detail, ordinal)
 VALUES
-  ('g0000000-0000-0000-0000-000000000001','Fabric & Apparel','Cotton, polycotton, fleece, canvas, twill, satin, nylon',1),
-  ('g0000000-0000-0000-0000-000000000002','Paper & Card','Art paper, ivory, pearl, kraft, gloss, silk and 300gsm board',2),
-  ('g0000000-0000-0000-0000-000000000003','Vinyl & Films','Casting vinyl, one-way vision, reflective, transparent and magnetic',3),
-  ('g0000000-0000-0000-0000-000000000004','Rigid substrates','Acrylic, PVC foam, foam board, ACP aluminium composite, wood',4),
-  ('g0000000-0000-0000-0000-000000000005','Metals','Brass, aluminium, stainless steel for tags, plaques and name badges',5),
-  ('g0000000-0000-0000-0000-000000000006','Glass, Crystal & Stone','Framed glass, crystal awards, marble plaques',6),
-  ('g0000000-0000-0000-0000-000000000007','Ceramics & Drinkware','Mugs, bottles and ceramic giftware via sublimation',7),
-  ('g0000000-0000-0000-0000-000000000008','Vehicles','Cars, buses, keke, vans and trucks — full or partial wraps',8)
+  ('70000000-0000-0000-0000-000000000001','Fabric & Apparel','Cotton, polycotton, fleece, canvas, twill, satin, nylon',1),
+  ('70000000-0000-0000-0000-000000000002','Paper & Card','Art paper, ivory, pearl, kraft, gloss, silk and 300gsm board',2),
+  ('70000000-0000-0000-0000-000000000003','Vinyl & Films','Casting vinyl, one-way vision, reflective, transparent and magnetic',3),
+  ('70000000-0000-0000-0000-000000000004','Rigid substrates','Acrylic, PVC foam, foam board, ACP aluminium composite, wood',4),
+  ('70000000-0000-0000-0000-000000000005','Metals','Brass, aluminium, stainless steel for tags, plaques and name badges',5),
+  ('70000000-0000-0000-0000-000000000006','Glass, Crystal & Stone','Framed glass, crystal awards, marble plaques',6),
+  ('70000000-0000-0000-0000-000000000007','Ceramics & Drinkware','Mugs, bottles and ceramic giftware via sublimation',7),
+  ('70000000-0000-0000-0000-000000000008','Vehicles','Cars, buses, keke, vans and trucks — full or partial wraps',8)
 ON CONFLICT DO NOTHING;
 
 -- print_sizes
@@ -159,56 +159,41 @@ ON CONFLICT DO NOTHING;
 -- print_colors
 INSERT INTO public.print_colors (id, name, hex, ordinal)
 VALUES
-  ('h0000000-0000-0000-0000-000000000001','Kabaprints Blue','#1E6FA9',1),
-  ('h0000000-0000-0000-0000-000000000002','Deep Blue','#14507E',2),
-  ('h0000000-0000-0000-0000-000000000003','Coral','#E4795B',3),
-  ('h0000000-0000-0000-0000-000000000004','Slate Grey','#96A1A6',4),
-  ('h0000000-0000-0000-0000-000000000005','Ink Black','#101A24',5),
-  ('h0000000-0000-0000-0000-000000000006','Pure White','#FFFFFF',6),
-  ('h0000000-0000-0000-0000-000000000007','Sun Yellow','#F4C542',7),
-  ('h0000000-0000-0000-0000-000000000008','Leaf Green','#2FA36B',8)
+  ('80000000-0000-0000-0000-000000000001','Kabaprints Blue','#1E6FA9',1),
+  ('80000000-0000-0000-0000-000000000002','Deep Blue','#14507E',2),
+  ('80000000-0000-0000-0000-000000000003','Coral','#E4795B',3),
+  ('80000000-0000-0000-0000-000000000004','Slate Grey','#96A1A6',4),
+  ('80000000-0000-0000-0000-000000000005','Ink Black','#101A24',5),
+  ('80000000-0000-0000-0000-000000000006','Pure White','#FFFFFF',6),
+  ('80000000-0000-0000-0000-000000000007','Sun Yellow','#F4C542',7),
+  ('80000000-0000-0000-0000-000000000008','Leaf Green','#2FA36B',8)
 ON CONFLICT DO NOTHING;
 
 -- color_notes
 INSERT INTO public.color_notes (id, note, ordinal)
 VALUES
-  ('i0000000-0000-0000-0000-000000000001','Full CMYK process colour for photographic artwork',1),
-  ('i0000000-0000-0000-0000-000000000002','Pantone spot matching on request (send us your PMS number)',2),
-  ('i0000000-0000-0000-0000-000000000003','Neon, metallic gold/silver and glow-in-the-dark options',3),
-  ('i0000000-0000-0000-0000-000000000004','RAL colours available for signage fabrication',4)
+  ('90000000-0000-0000-0000-000000000001','Full CMYK process colour for photographic artwork',1),
+  ('90000000-0000-0000-0000-000000000002','Pantone spot matching on request (send us your PMS number)',2),
+  ('90000000-0000-0000-0000-000000000003','Neon, metallic gold/silver and glow-in-the-dark options',3),
+  ('90000000-0000-0000-0000-000000000004','RAL colours available for signage fabrication',4)
 ON CONFLICT DO NOTHING;
 
 -- design_services
 INSERT INTO public.design_services (id, title, detail, ordinal)
 VALUES
-  ('j0000000-0000-0000-0000-000000000001','Logo Design & Refresh','Distinctive marks with full file handover — SVG, PNG, PDF and print-ready EPS.',1),
-  ('j0000000-0000-0000-0000-000000000002','Brand Identity Systems','Colour palette, typography, stationery and a usage guide your team can follow.',2),
-  ('j0000000-0000-0000-0000-000000000003','Flyers, Posters & Handbills','Campaign artwork built to print, from concept to press-ready PDF with bleed.',3),
-  ('j0000000-0000-0000-0000-000000000004','Social Media Graphics','Consistent post templates, stories and ad creatives sized for every platform.',4),
-  ('j0000000-0000-0000-0000-000000000005','Product & Packaging Artwork','Labels, cartons and wraps that stand out on the shelf and print flawlessly.',5),
-  ('j0000000-0000-0000-0000-000000000006','Vehicle & Signage Layouts','Scaled mock-ups of wraps, fascia signs and light boxes before anything is cut.',6)
+  ('00000000-0000-0000-0000-000000000001','Logo Design & Refresh','Distinctive marks with full file handover — SVG, PNG, PDF and print-ready EPS.',1),
+  ('00000000-0000-0000-0000-000000000002','Brand Identity Systems','Colour palette, typography, stationery and a usage guide your team can follow.',2),
+  ('00000000-0000-0000-0000-000000000003','Flyers, Posters & Handbills','Campaign artwork built to print, from concept to press-ready PDF with bleed.',3),
+  ('00000000-0000-0000-0000-000000000004','Social Media Graphics','Consistent post templates, stories and ad creatives sized for every platform.',4),
+  ('00000000-0000-0000-0000-000000000005','Product & Packaging Artwork','Labels, cartons and wraps that stand out on the shelf and print flawlessly.',5),
+  ('00000000-0000-0000-0000-000000000006','Vehicle & Signage Layouts','Scaled mock-ups of wraps, fascia signs and light boxes before anything is cut.',6)
 ON CONFLICT DO NOTHING;
 
 -- design_process
 INSERT INTO public.design_process (id, step, title, detail, ordinal)
 VALUES
-  ('k0000000-0000-0000-0000-000000000001','01','Brief','Tell us the goal, audience, deadline and any ideas you already have.',1),
-  ('k0000000-0000-0000-0000-000000000002','02','Concept','Our designers explore directions and share the strongest options with you.',2),
-  ('k0000000-0000-0000-0000-000000000003','03','Revise','You review and we refine until every detail feels right — revisions included.',3),
-  ('k0000000-0000-0000-0000-000000000004','04','Deliver','You receive print-ready and digital files, ready to go straight into production.',4)
+  ('10000000-0000-0000-0000-000000000001','01','Brief','Tell us the goal, audience, deadline and any ideas you already have.',1),
+  ('10000000-0000-0000-0000-000000000002','02','Concept','Our designers explore directions and share the strongest options with you.',2),
+  ('10000000-0000-0000-0000-000000000003','03','Revise','You review and we refine until every detail feels right — revisions included.',3),
+  ('10000000-0000-0000-0000-000000000004','04','Deliver','You receive print-ready and digital files, ready to go straight into production.',4)
 ON CONFLICT DO NOTHING;
-
--- vacuum for freshness (harmless to repeat)
-VACUUM ANALYZE public.site_settings;
-VACUUM ANALYZE public.services;
-VACUUM ANALYZE public.products;
-VACUUM ANALYZE public.hero_slides;
-VACUUM ANALYZE public.testimonials;
-VACUUM ANALYZE public.portfolio_works;
-VACUUM ANALYZE public.before_after;
-VACUUM ANALYZE public.printable_materials;
-VACUUM ANALYZE public.print_sizes;
-VACUUM ANALYZE public.print_colors;
-VACUUM ANALYZE public.color_notes;
-VACUUM ANALYZE public.design_services;
-VACUUM ANALYZE public.design_process;

@@ -3,6 +3,33 @@
 -- Project: https://ccabevypxuwzpbagkiji.supabase.co
 -- ============================================================
 
+-- ---------- ownership preamble ----------
+-- The Management API creates tables as a role that may not be the caller.
+-- Reassign ownership to the current role so the RLS/policy DDL below
+-- (which requires table ownership) succeeds. Safe to re-run.
+ALTER TABLE public.profiles            OWNER TO current_user;
+ALTER TABLE public.site_settings       OWNER TO current_user;
+ALTER TABLE public.services            OWNER TO current_user;
+ALTER TABLE public.products            OWNER TO current_user;
+ALTER TABLE public.hero_slides         OWNER TO current_user;
+ALTER TABLE public.testimonials        OWNER TO current_user;
+ALTER TABLE public.portfolio_works     OWNER TO current_user;
+ALTER TABLE public.before_after        OWNER TO current_user;
+ALTER TABLE public.printable_materials OWNER TO current_user;
+ALTER TABLE public.print_sizes         OWNER TO current_user;
+ALTER TABLE public.print_colors        OWNER TO current_user;
+ALTER TABLE public.color_notes         OWNER TO current_user;
+ALTER TABLE public.design_services     OWNER TO current_user;
+ALTER TABLE public.design_process      OWNER TO current_user;
+ALTER TABLE public.orders              OWNER TO current_user;
+ALTER TABLE public.design_uploads      OWNER TO current_user;
+DO $$
+BEGIN
+  ALTER TABLE storage.objects OWNER TO current_user;
+EXCEPTION WHEN OTHERS THEN NULL;
+END
+$$;
+
 -- ---------- enable RLS everywhere ----------
 ALTER TABLE public.profiles           FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings      FORCE ROW LEVEL SECURITY;
@@ -20,7 +47,12 @@ ALTER TABLE public.design_services    FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.design_process     FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.orders             FORCE ROW LEVEL SECURITY;
 ALTER TABLE public.design_uploads     FORCE ROW LEVEL SECURITY;
-ALTER TABLE storage.objects           FORCE ROW LEVEL SECURITY;
+DO $$
+BEGIN
+  ALTER TABLE storage.objects FORCE ROW LEVEL SECURITY;
+EXCEPTION WHEN OTHERS THEN NULL;
+END
+$$;
 
 -- ---------- reusable admin check ----------
 -- A user is an admin when their profile.role = 'admin'.

@@ -57,7 +57,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseEnv, isSupabaseConfigured } from "@/lib/supabase/env";
+import { getSupabaseEnv, getSupabaseConfigStatus, isSupabaseConfigured } from "@/lib/supabase/env";
 import {
   MIGRATION_FILES,
   MIGRATION_0001_schema_sql,
@@ -213,8 +213,7 @@ const PUSH_SECRET_HEADER = "x-supabase-push-secret";
 
 function getPushToken(): string | null {
   // The Management API requires a Supabase PAT (database:write). The service
-  // role key cannot call it, so we require a PAT. We still honour the legacy
-  // SUPABASE_SERVICE_ROLE_KEY for the "is configured" check only.
+  // role key cannot call it, so we require a PAT.
   return process.env.SUPABASE_PUSH_TOKEN ?? null;
 }
 
@@ -289,7 +288,12 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   if (!isSupabaseConfigured()) {
     return NextResponse.json(
-      { configured: false, message: "Supabase env not set." },
+      {
+        configured: false,
+        message: "Supabase public env not set.",
+        // Presence-only booleans — no URL, key or token value is ever exposed.
+        envStatus: getSupabaseConfigStatus(),
+      },
       { status: 503 }
     );
   }
@@ -298,6 +302,8 @@ export async function GET() {
   return NextResponse.json({
     configured: true,
     projectUrl: env.NEXT_PUBLIC_SUPABASE_URL,
+    // Presence-only booleans — safe to expose; never contains credential values.
+    envStatus: getSupabaseConfigStatus(),
     pushTokenConfigured: !!pushToken,
     environment: process.env.SUPABASE_PUSH_SECRET
       ? "gated"

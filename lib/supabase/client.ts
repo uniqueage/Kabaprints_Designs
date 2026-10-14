@@ -1,6 +1,6 @@
 import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
-import { getSupabaseEnv, isSupabaseConfigured } from "./env";
+import { getSupabaseEnv, getSupabaseServiceRoleKey, isSupabaseConfigured } from "./env";
 
 // Minimal cookie serialize option shape (subset of the `cookie` package's
 // SerializeOptions). Avoids adding a dependency for a small helper.
@@ -146,12 +146,13 @@ export function createSupabaseClient() {
  */
 export function createSupabaseAdminClient() {
   const env = getSupabaseEnv();
-  if (!env || !env.SUPABASE_SERVICE_ROLE_KEY) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!env || !serviceRoleKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables (server only)."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables (server only)."
     );
   }
-  return createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
+  return createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 }

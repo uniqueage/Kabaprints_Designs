@@ -22,7 +22,7 @@
 
 import { z } from "zod";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { getSupabaseEnv } from "@/lib/supabase/env";
+import { getSupabaseEnv, getSupabaseServiceRoleKey } from "@/lib/supabase/env";
 import type {
   Order,
   OrderStatus,
@@ -89,7 +89,7 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
   const env = getSupabaseEnv();
   if (!env) {
     throw new Error(
-      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel environment variables."
     );
   }
 
@@ -194,13 +194,14 @@ export async function listMyOrders(): Promise<Order[]> {
 // ---------- admin: list all orders (service role) ----------
 export async function adminListOrders(limit = 100): Promise<Order[]> {
   const env = getSupabaseEnv();
-  if (!env) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!env || !serviceRoleKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
     );
   }
 
-  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey);
   const { data, error } = await admin
     .from("orders")
     .select("*")
@@ -221,13 +222,14 @@ export async function adminUpdateOrderStatus(
   notes?: string
 ): Promise<Order> {
   const env = getSupabaseEnv();
-  if (!env) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!env || !serviceRoleKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
     );
   }
 
-  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey);
   const { data, error } = await admin
     .from("orders")
     .update({ status, details: notes ? `${notes}\n\n[Status updated to ${status} by admin]` : undefined })

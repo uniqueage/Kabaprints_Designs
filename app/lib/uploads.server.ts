@@ -25,7 +25,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
-import { getSupabaseEnv } from "@/lib/supabase/env";
+import { getSupabaseEnv, getSupabaseServiceRoleKey } from "@/lib/supabase/env";
 import type { DesignUpload } from "@/supabase/lib/types";
 
 const ALLOWED_MIME: string[] = [
@@ -140,7 +140,7 @@ export async function uploadDesignFile(input: UploadDesignFileInput): Promise<Up
   const env = getSupabaseEnv();
   if (!env) {
     throw new Error(
-      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel environment variables."
     );
   }
 
@@ -317,13 +317,14 @@ export async function removeMyUpload(userId: string, fileId: string): Promise<vo
 // ---------- admin: list all uploads (service role) ----------
 export async function adminListUploads(limit = 200): Promise<DesignUpload[]> {
   const env = getSupabaseEnv();
-  if (!env) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!env || !serviceRoleKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
     );
   }
 
-  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey);
   const { data, error } = await admin
     .from("design_uploads")
     .select("*")
@@ -344,13 +345,14 @@ export async function adminUpdateUploadStatus(
   notes?: string
 ): Promise<DesignUpload> {
   const env = getSupabaseEnv();
-  if (!env) {
+  const serviceRoleKey = getSupabaseServiceRoleKey();
+  if (!env || !serviceRoleKey) {
     throw new Error(
-      "Supabase is not configured. Set SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
+      "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables."
     );
   }
 
-  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
+  const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey);
   const { data, error } = await admin
     .from("design_uploads")
     .update({

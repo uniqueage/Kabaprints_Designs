@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { Profile } from "@/supabase/lib/types";
-import Link from "next/link";
 import { ArrowLeft, Box, FileText, LogOut, Package, Settings, ShoppingBag } from "@/lib/icons";
+import { COLLECTIONS } from "./content/collections";
 
 interface Props {
   user: Profile;
@@ -15,12 +16,14 @@ const nav = [
   { href: "/admin", label: "Dashboard", icon: Box },
   { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/content", label: "Content", icon: FileText },
   { href: "/admin/designs", label: "Designs", icon: FileText },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export default function AdminShell({ user, children }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
 
   async function handleSignOut() {
     const supabase = createSupabaseBrowserClient();
@@ -29,11 +32,16 @@ export default function AdminShell({ user, children }: Props) {
     router.refresh();
   }
 
+  const isActive = (href: string) =>
+    href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+
+  const onContent = pathname.startsWith("/admin/content");
+
   return (
     <div className="flex min-h-screen flex-col bg-cream">
       {/* top bar */}
       <div className="bg-brand-deep text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -64,45 +72,79 @@ export default function AdminShell({ user, children }: Props) {
         </div>
       </div>
 
-      {/* sidebar */}
-      <aside className="w-[220px] shrink-0 border-r border-silver-light/70 bg-white">
-        <div className="sticky top-0 h-full border-b border-silver-light/70 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-          <div className="mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-            <a href="/admin" className="flex items-center gap-2.5">
+      <div className="flex flex-1 flex-col lg:flex-row">
+        {/* sidebar */}
+        <aside className="w-full shrink-0 border-b border-silver-light/70 bg-white lg:w-[248px] lg:border-b-0 lg:border-r">
+          <div className="lg:sticky lg:top-0">
+            <Link href="/admin" className="flex items-center gap-2.5 border-b border-silver-light/60 px-4 py-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-xs font-black text-white">
                 K
               </span>
               <span className="text-sm font-bold text-ink">Kabaprints</span>
               <span className="text-xs text-muted">Admin</span>
-            </a>
-          </div>
-          <nav className="mx-auto max-w-7xl px-4 pb-4 sm:px-6 lg:px-8">
-            <ul className="space-y-1">
-              {nav.map((n) => {
-                const Icon = n.icon;
-                return (
-                  <li key={n.href}>
-                    <a
-                      href={n.href}
-                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-soft transition hover:bg-brand-light hover:text-brand-dark"
-                    >
-                      <Icon className="h-4 w-4" />
-                      {n.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </div>
-      </aside>
+            </Link>
 
-      {/* content */}
-      <main className="flex-1">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-          {children}
-        </div>
-      </main>
+            <nav aria-label="Admin sections" className="overflow-x-auto p-3 lg:overflow-visible">
+              <ul className="flex gap-1 lg:flex-col">
+                {nav.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <li key={item.href} className="shrink-0 lg:shrink">
+                      <Link
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex items-center gap-2.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${
+                          active
+                            ? "bg-brand-light text-brand-dark"
+                            : "text-ink-soft hover:bg-brand-light hover:text-brand-dark"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {onContent && (
+                <div className="mt-3 hidden border-t border-silver-light/60 pt-3 lg:block">
+                  <p className="px-3 pb-1 text-[10px] font-black uppercase tracking-widest text-muted">
+                    Edit content
+                  </p>
+                  <ul className="space-y-0.5">
+                    {COLLECTIONS.map((c) => {
+                      const href = `/admin/content/${c.slug}`;
+                      const active = pathname === href;
+                      return (
+                        <li key={c.slug}>
+                          <Link
+                            href={href}
+                            aria-current={active ? "page" : undefined}
+                            className={`block rounded-lg px-3 py-1.5 text-[13px] transition ${
+                              active
+                                ? "bg-cream font-bold text-brand-dark"
+                                : "font-medium text-muted hover:bg-cream hover:text-ink"
+                            }`}
+                          >
+                            {c.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </nav>
+          </div>
+        </aside>
+
+        {/* content */}
+        <main className="flex-1">
+          <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }

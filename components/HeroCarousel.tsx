@@ -2,23 +2,36 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { heroSlides } from "@/lib/data";
+import type { HeroSlide } from "@/lib/data";
 
 const DURATION = 6000;
 
-export default function HeroCarousel() {
+interface Props {
+  /** Live hero slides from the admin dashboard (falls back to the static set). */
+  slides: HeroSlide[];
+  /** Number of live services, shown in the hero stats. */
+  serviceCount: number;
+  /** Opening hours line, shown in the hero stats. */
+  hours: string;
+}
+
+export default function HeroCarousel({ slides, serviceCount, hours }: Props) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  const go = useCallback((i: number) => setIndex((i + heroSlides.length) % heroSlides.length), []);
+  const count = slides.length || 1;
+
+  const go = useCallback((i: number) => setIndex((i + count) % count), [count]);
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % heroSlides.length), DURATION);
+    const t = setInterval(() => setIndex((i) => (i + 1) % count), DURATION);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, count]);
 
-  const slide = heroSlides[index];
+  const slide = slides[index % count];
+
+  if (!slide) return null;
 
   return (
     <section
@@ -65,11 +78,11 @@ export default function HeroCarousel() {
           <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-white/15 pt-6">
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Services</dt>
-              <dd className="text-2xl font-black">7<span className="text-coral">+</span></dd>
+              <dd className="text-2xl font-black">{serviceCount}<span className="text-coral">+</span></dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Open</dt>
-              <dd className="text-2xl font-black">6<span className="text-coral">d</span></dd>
+              <dd className="text-2xl font-black">{hours}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Since</dt>
@@ -81,7 +94,7 @@ export default function HeroCarousel() {
         {/* rotating pictures column */}
         <div className="relative">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/15 shadow-2xl shadow-black/40 sm:aspect-[16/11]">
-            {heroSlides.map((s, i) => (
+            {slides.map((s, i) => (
               <div
                 key={s.image}
                 className={`absolute inset-0 transition-opacity duration-700 ${i === index ? "slide-active opacity-100" : "opacity-0"}`}
@@ -129,7 +142,7 @@ export default function HeroCarousel() {
           {/* dots + counter */}
           <div className="mt-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {heroSlides.map((s, i) => (
+              {slides.map((s, i) => (
                 <button
                   key={s.image}
                   type="button"
@@ -141,7 +154,7 @@ export default function HeroCarousel() {
               ))}
             </div>
             <p className="font-mono text-xs text-white/60">
-              <span className="text-white">0{index + 1}</span> / 0{heroSlides.length}
+              <span className="text-white">0{index + 1}</span> / 0{count}
             </p>
           </div>
         </div>

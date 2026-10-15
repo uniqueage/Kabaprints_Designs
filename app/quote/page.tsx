@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import QuoteForm from "@/components/QuoteForm";
 import Reveal from "@/components/Reveal";
-import { SITE, portfolioWorks, printableMaterials, printColors, printSizes, colorNotes, services } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Get a Quote",
@@ -17,7 +17,16 @@ const steps = [
   { n: "04", t: "Produce & deliver", d: "Printing, finishing, quality check, then pick-up, dispatch or installation." },
 ];
 
-export default function QuotePage() {
+export default async function QuotePage() {
+  const content = await getSiteContent();
+  const SITE = content.site;
+  const services = content.services;
+  const portfolioWorks = content.portfolioWorks;
+  const printableMaterials = content.printableMaterials;
+  const printSizes = content.printSizes;
+  const printColors = content.printColors;
+  const colorNotes = content.colorNotes;
+
   return (
     <>
       <section className="bg-brand-deep py-14 text-white sm:py-16">
@@ -201,14 +210,14 @@ export default function QuotePage() {
       <section id="form" className="bg-brand-light/60 py-14 sm:py-20">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.3fr_1fr] lg:px-8">
           <div>
-            <QuoteForm />
+            <QuoteForm site={SITE} services={services} />
           </div>
           <aside className="space-y-5">
             <div className="rounded-3xl bg-brand p-6 text-white">
               <h3 className="text-lg font-black">Open hours</h3>
               <p className="mt-3 text-3xl font-black">{SITE.hours}</p>
               <p className="text-white/80">{SITE.hoursDays}</p>
-              <p className="mt-4 text-sm text-white/60">Quotes submitted outside these hours are answered first thing next working day.</p>
+              <p className="mt-4 text-sm text-white/60">Open around the clock — quote requests are answered the same day, any day of the week.</p>
             </div>
             <div className="rounded-3xl bg-white p-6 ring-1 ring-silver-light">
               <h3 className="text-lg font-black text-ink">Prefer to talk?</h3>

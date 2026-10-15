@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SignInForm from "@/components/SignInForm";
-import { SITE, services } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = { title: "Sign In" };
 
-export default function SignInPage() {
+export default async function SignInPage() {
+  const content = await getSiteContent();
+  const SITE = content.site;
+  const services = content.services;
+
   return (
     <section className="py-14 sm:py-20">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
@@ -39,7 +43,7 @@ export default function SignInPage() {
         </div>
 
         <div className="mx-auto w-full max-w-md">
-          <SignInForm />
+          <SignInForm site={SITE} />
         </div>
       </div>
     </section>

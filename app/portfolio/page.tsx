@@ -3,14 +3,19 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
 import BeforeAfterSlider from "@/components/BeforeAfter";
-import { beforeAfter, portfolioWorks, services } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Portfolio — Kabaprints Works",
   description: "Kabaprints works: before and after product displays across transfer print, screen print, banners, vehicles, engraving and signage.",
 };
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const content = await getSiteContent();
+  const beforeAfter = content.beforeAfter;
+  const portfolioWorks = content.portfolioWorks;
+  const services = content.services;
+
   return (
     <>
       <section className="bg-brand-deep py-14 text-white sm:py-16">

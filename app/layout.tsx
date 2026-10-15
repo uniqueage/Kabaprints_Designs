@@ -4,6 +4,13 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
+import { getSiteContent } from "@/lib/site-content";
+
+/**
+ * Every page renders against live content, so admin edits appear immediately
+ * instead of waiting for a rebuild.
+ */
+export const dynamic = "force-dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,11 +50,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const content = await getSiteContent();
+  // Only the fields the header menus need are passed to the client component.
+  const headerServices = content.services.map((s) => ({ slug: s.slug, tag: s.tag, tagline: s.tagline }));
+
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
-        <Header />
+        <Header site={content.site} services={headerServices} />
         <main className="flex-1">{children}</main>
         <Footer />
         <FloatingActions />

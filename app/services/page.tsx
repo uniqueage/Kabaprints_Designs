@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { services } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "All Services",
@@ -10,7 +10,10 @@ export const metadata: Metadata = {
     "Transfer print, screen print, clean banners, van display, engraving, signage and more — every Kabaprints service in one place.",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const content = await getSiteContent();
+  const services = content.services;
+
   return (
     <>
       <section className="bg-brand-deep py-14 text-white sm:py-16">
@@ -20,7 +23,7 @@ export default function ServicesPage() {
           </nav>
           <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Our Services</h1>
           <p className="mt-3 max-w-2xl text-white/75">
-            Seven dedicated service pages covering apparel, bulk printing, large format, vehicles,
+            {services.length} dedicated service pages covering apparel, bulk printing, large format, vehicles,
             engraving and signage — plus the odd special request.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">

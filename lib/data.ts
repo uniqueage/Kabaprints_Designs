@@ -3,8 +3,8 @@ export const SITE = {
   tagline: "Printshop + Design",
   vision:
     "Kabaprints is a Marketing and Printing Agency that specialises in Advert production. We are dynamic and highly creative professionals. As a matter of policy, our primary motive is to see that our clients' communication campaigns lead to great profits",
-  hours: "9:00 am – 7:00 pm",
-  hoursDays: "Mondays – Saturdays",
+  hours: "24/7",
+  hoursDays: "Monday – Sunday",
   phones: [
     { display: "0803 296 1171", tel: "+2348032961171" },
     { display: "0915 281 2526", tel: "+2349152812526" },
@@ -384,41 +384,13 @@ export const designServices: DesignService[] = [
   { title: "Vehicle & Signage Layouts", detail: "Scaled mock-ups of wraps, fascia signs and light boxes before anything is cut." },
 ];
 
-export const designProcess = [
+export type DesignProcessStep = { step: string; title: string; detail: string };
+
+export const designProcess: DesignProcessStep[] = [
   { step: "01", title: "Brief", detail: "Tell us the goal, audience, deadline and any ideas you already have." },
   { step: "02", title: "Concept", detail: "Our designers explore directions and share the strongest options with you." },
   { step: "03", title: "Revise", detail: "You review and we refine until every detail feels right — revisions included." },
   { step: "04", title: "Deliver", detail: "You receive print-ready and digital files, ready to go straight into production." },
 ];
 
-export const staticPages = [
-  { title: "Home", href: "/", description: "Kabaprints homepage — carousel, services and vision" },
-  { title: "All Services", href: "/services", description: "Every print and design service we offer" },
-  { title: "Get a Quote", href: "/quote", description: "Materials, sizes, colours, sample projects and quote form" },
-  { title: "Need a Design?", href: "/design", description: "Graphic design services, process and deliverables" },
-  { title: "Upload Your Design", href: "/upload", description: "Upload PNG, JPG, JPEG, PDF or SVG files for printing" },
-  { title: "Portfolio — Kabaprints Works", href: "/portfolio", description: "Before and after product showcase" },
-  { title: "Contact & Open Hours", href: "/contact", description: "Call, WhatsApp and opening hours 9:00 am – 7:00 pm" },
-  { title: "Sign In", href: "/sign-in", description: "Customer account sign in" },
-];
-
 export type SearchEntry = { title: string; href: string; description: string; type: string };
-
-export function buildSearchIndex(): SearchEntry[] {
-  const entries: SearchEntry[] = staticPages.map((p) => ({ ...p, type: "Page" }));
-  for (const s of services) {
-    entries.push({ title: s.tag, href: `/services/${s.slug}`, description: s.tagline, type: "Service" });
-    for (const item of s.items) {
-      entries.push({
-        title: item.title,
-        href: `/services/${s.slug}`,
-        description: `${s.tag} — ${item.blurb}`,
-        type: s.tag,
-      });
-    }
-  }
-  for (const w of portfolioWorks.slice(0, 8)) {
-    entries.push({ title: w.title, href: "/portfolio", description: `Kabaprints work — ${w.note}`, type: "Portfolio" });
-  }
-  return entries;
-}

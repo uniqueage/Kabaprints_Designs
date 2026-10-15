@@ -156,6 +156,9 @@ export default async function AdminDashboardPage() {
         <Link href="/admin/products" className="rounded-xl border border-silver-light bg-white px-4 py-2.5 text-sm font-semibold text-ink-soft transition hover:border-brand hover:text-brand hover:bg-brand-light">
           Manage products
         </Link>
+        <Link href="/admin/content" className="rounded-xl border border-silver-light bg-white px-4 py-2.5 text-sm font-semibold text-ink-soft transition hover:border-brand hover:text-brand hover:bg-brand-light">
+          Edit content (portfolio, testimonials…)
+        </Link>
         <Link href="/admin/designs" className="rounded-xl border border-silver-light bg-white px-4 py-2.5 text-sm font-semibold text-ink-soft transition hover:border-brand hover:text-brand hover:bg-brand-light">
           Review designs
         </Link>

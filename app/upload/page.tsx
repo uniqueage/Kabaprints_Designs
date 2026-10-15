@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import UploadDropzone from "@/components/UploadDropzone";
 import CtaBand from "@/components/CtaBand";
-import { services } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Upload Your Design",
@@ -17,7 +17,10 @@ const checklist = [
   "White backgrounds removed for transfers (if needed)",
 ];
 
-export default function UploadPage() {
+export default async function UploadPage() {
+  const content = await getSiteContent();
+  const services = content.services;
+
   return (
     <>
       <section className="bg-brand-deep py-14 text-white sm:py-16">
@@ -36,7 +39,7 @@ export default function UploadPage() {
       <section className="py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.5fr_1fr] lg:px-8">
           <div>
-            <UploadDropzone />
+            <UploadDropzone site={content.site} />
           </div>
 
           <aside className="space-y-5">

@@ -28,7 +28,7 @@ export interface SiteSettings {
   hours_days: string;
   whatsapp_number: string;
   email: string;
-  phones_json: PhonesJson;
+  phones_json: PhonesJson[];
   updated_at: string;
 }
 

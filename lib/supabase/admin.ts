@@ -47,6 +47,31 @@ function adminClient() {
   return createClient(env.NEXT_PUBLIC_SUPABASE_URL, serviceRoleKey);
 }
 
+/**
+ * Upsert a single row by id and return the saved row.
+ *
+ * The id is resolved ONCE: a previous version called `crypto.randomUUID()`
+ * separately for the insert and for the follow-up read, so the read never
+ * matched the row that was just written and every upsert threw
+ * "… upsert returned no row". Always go through this helper.
+ */
+async function upsertById<T>(
+  table: string,
+  input: Record<string, unknown> & { id?: string },
+): Promise<T> {
+  const c = adminClient();
+  const id = input.id ?? crypto.randomUUID();
+  const { data, error } = await c
+    .from(table)
+    .upsert({ ...input, id }, { onConflict: "id" })
+    .select()
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error(`${table} upsert returned no row`);
+  return data as T;
+}
+
 // ---------- storage public URL helper ----------
 function publicObjectUrl(path: string): string {
   const env = getSupabaseEnv();
@@ -152,16 +177,14 @@ export async function upsertProduct(input: {
   image: string;     // storage path
   ordinal?: number;
 }): Promise<Product> {
+  return upsertById<Product>("products", input);
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
   const c = adminClient();
-  const { data, error } = await c
-    .from("products")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
+  const { data, error } = await c.from("products").select("*").eq("id", id).maybeSingle();
   if (error) throw error;
-  if (!data) throw new Error("product upsert returned no row");
-  return data as Product;
+  return (data ?? null) as Product | null;
 }
 
 export async function deleteProduct(id: string): Promise<void> {
@@ -192,16 +215,7 @@ export async function upsertHeroSlide(input: {
   cta: string;
   ordinal?: number;
 }): Promise<HeroSlide> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("hero_slides")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("hero_slide upsert returned no row");
-  return data as HeroSlide;
+  return upsertById<HeroSlide>("hero_slides", input);
 }
 
 export async function deleteHeroSlide(id: string): Promise<void> {
@@ -230,16 +244,7 @@ export async function upsertTestimonial(input: {
   rating?: number;
   ordinal?: number;
 }): Promise<Testimonial> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("testimonials")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("testimonial upsert returned no row");
-  return data as Testimonial;
+  return upsertById<Testimonial>("testimonials", input);
 }
 
 export async function deleteTestimonial(id: string): Promise<void> {
@@ -267,16 +272,7 @@ export async function upsertPortfolioWork(input: {
   note: string;
   ordinal?: number;
 }): Promise<PortfolioWork> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("portfolio_works")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("portfolio_work upsert returned no row");
-  return data as PortfolioWork;
+  return upsertById<PortfolioWork>("portfolio_works", input);
 }
 
 export async function deletePortfolioWork(id: string): Promise<void> {
@@ -306,16 +302,7 @@ export async function upsertBeforeAfter(input: {
   note: string;
   ordinal?: number;
 }): Promise<BeforeAfter> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("before_after")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("before_after upsert returned no row");
-  return data as BeforeAfter;
+  return upsertById<BeforeAfter>("before_after", input);
 }
 
 export async function deleteBeforeAfter(id: string): Promise<void> {
@@ -341,16 +328,7 @@ export async function upsertPrintableMaterial(input: {
   detail: string;
   ordinal?: number;
 }): Promise<PrintableMaterial> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("printable_materials")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("printable_material upsert returned no row");
-  return data as PrintableMaterial;
+  return upsertById<PrintableMaterial>("printable_materials", input);
 }
 
 export async function deletePrintableMaterial(id: string): Promise<void> {
@@ -377,16 +355,7 @@ export async function upsertPrintSize(input: {
   size: string;
   ordinal?: number;
 }): Promise<PrintSize> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("print_sizes")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("print_size upsert returned no row");
-  return data as PrintSize;
+  return upsertById<PrintSize>("print_sizes", input);
 }
 
 export async function deletePrintSize(id: string): Promise<void> {
@@ -412,16 +381,7 @@ export async function upsertPrintColor(input: {
   hex: string;
   ordinal?: number;
 }): Promise<PrintColor> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("print_colors")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("print_color upsert returned no row");
-  return data as PrintColor;
+  return upsertById<PrintColor>("print_colors", input);
 }
 
 export async function deletePrintColor(id: string): Promise<void> {
@@ -446,16 +406,7 @@ export async function upsertColorNote(input: {
   note: string;
   ordinal?: number;
 }): Promise<ColorNote> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("color_notes")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("color_note upsert returned no row");
-  return data as ColorNote;
+  return upsertById<ColorNote>("color_notes", input);
 }
 
 export async function deleteColorNote(id: string): Promise<void> {
@@ -481,16 +432,7 @@ export async function upsertDesignService(input: {
   detail: string;
   ordinal?: number;
 }): Promise<DesignService> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("design_services")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("design_service upsert returned no row");
-  return data as DesignService;
+  return upsertById<DesignService>("design_services", input);
 }
 
 export async function deleteDesignService(id: string): Promise<void> {
@@ -517,16 +459,7 @@ export async function upsertDesignProcessStep(input: {
   detail: string;
   ordinal?: number;
 }): Promise<DesignProcessStep> {
-  const c = adminClient();
-  const { data, error } = await c
-    .from("design_process")
-    .upsert({ ...input, id: input.id ?? crypto.randomUUID() }, { onConflict: "id" })
-    .select()
-    .eq("id", input.id ?? crypto.randomUUID())
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("design_process_step upsert returned no row");
-  return data as DesignProcessStep;
+  return upsertById<DesignProcessStep>("design_process", input);
 }
 
 export async function deleteDesignProcessStep(id: string): Promise<void> {

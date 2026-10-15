@@ -1,10 +1,59 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { deleteProduct, listServices, listProductsForService } from "@/lib/supabase/admin";
-import { createSupabaseAdminClient } from "@/lib/supabase/client";
+import { deleteProduct, listServices, listProductsForService, upsertProduct } from "@/lib/supabase/admin";
+import { deleteUploadedImage, resolveSubmittedImage } from "@/lib/supabase/storage";
 import { adminUpdateUploadStatus } from "@/app/lib/uploads.server";
 import type { Product, UploadStatus } from "@/supabase/lib/types";
+
+/**
+ * Create or update a product from the admin create/edit form.
+ *
+ * An uploaded file (field `image_file`) wins over the typed `image` value, so
+ * the owner can either point at a bundled asset or upload their own picture.
+ * On success the public site is revalidated and the admin is redirected back
+ * to the product list with a confirmation message.
+ */
+export async function saveProductAction(formData: FormData) {
+  const id = String(formData.get("id") ?? "").trim();
+  const serviceId = String(formData.get("service_id") ?? "").trim();
+  const title = String(formData.get("title") ?? "").trim();
+  const blurb = String(formData.get("blurb") ?? "").trim();
+  const ordinalRaw = Number(formData.get("ordinal") ?? "0");
+  const backTo = id ? `/admin/products/${id}/edit` : "/admin/products/new";
+
+  const fail = (message: string): never => redirect(`${backTo}?error=${encodeURIComponent(message)}`);
+
+  if (!serviceId) fail("Choose the service this product belongs to.");
+  if (!title) fail("Give the product a title.");
+  if (!blurb) fail("Add a short description for the product.");
+
+  let image = "";
+  try {
+    image = await resolveSubmittedImage(formData);
+  } catch (err) {
+    fail(err instanceof Error ? err.message : "The image could not be processed.");
+  }
+
+  if (!image) fail("Add an image path or upload an image file.");
+
+  try {
+    await upsertProduct({
+      id: id || undefined,
+      service_id: serviceId,
+      title,
+      blurb,
+      image,
+      ordinal: Number.isNaN(ordinalRaw) ? 0 : ordinalRaw,
+    });
+  } catch (err) {
+    fail(err instanceof Error ? err.message : "The product could not be saved.");
+  }
+
+  revalidatePath("/", "layout");
+  redirect(`/admin/products?ok=${encodeURIComponent(id ? "Product updated." : "Product created.")}`);
+}
 
 /**
  * Delete a product. Also removes the associated image from the
@@ -13,6 +62,17 @@ import type { Product, UploadStatus } from "@/supabase/lib/types";
  * On success redirects back to the products listing with an ?ok= message.
  * On error redirects back with a ?error= message.
  */
+/**
+ * Delete a product submitted from a form (hidden `id` field).
+ */
+export async function deleteProductFormAction(formData: FormData) {
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) {
+    redirect("/admin/products?error=Missing+product+id.");
+  }
+  await deleteProductAction(id);
+}
+
 export async function deleteProductAction(productId: string) {
   if (!productId) {
     redirect("/admin/products?error=Missing+product+id.");
@@ -35,49 +95,17 @@ export async function deleteProductAction(productId: string) {
     redirect("/admin/products?error=Product+not+found.");
   }
 
-  // Best-effort image removal from the public bucket.
+  // Best-effort image removal. Bundled asset paths are left alone; only images
+  // uploaded through the admin panel live in the storage bucket.
   try {
-    const admin = createSupabaseAdminClient();
-    if (product.image.startsWith("/")) {
-      await admin.storage.from("products-images").remove([product.image]);
-    }
+    await deleteUploadedImage(product.image);
   } catch {
     // image removal is best-effort; don't fail the delete.
   }
 
   await deleteProduct(productId);
+  revalidatePath("/", "layout");
   redirect(`/admin/products?ok=Deleted+“${encodeURIComponent(product.title)}”.`);
-}
-
-/**
- * Update a product's core fields.
- */
-export async function updateProductAction(formData: FormData) {
-  const id = String(formData.get("id") ?? "").trim();
-  const title = String(formData.get("title") ?? "").trim();
-  const blurb = String(formData.get("blurb") ?? "").trim();
-  const image = String(formData.get("image") ?? "").trim();
-  const ordinal = Number(formData.get("ordinal") ?? "0");
-
-  if (!id) return { error: "Missing product id." };
-  if (!title) return { error: "Title is required." };
-  if (!blurb) return { error: "Description is required." };
-  if (!image) return { error: "Image path is required." };
-
-  const { upsertProduct } = await import("@/lib/supabase/admin");
-  try {
-    await upsertProduct({
-      id,
-      service_id: String(formData.get("service_id") ?? ""),
-      title,
-      blurb,
-      image,
-      ordinal: Number.isNaN(ordinal) ? 0 : ordinal,
-    });
-    return { ok: "Product saved." };
-  } catch (err) {
-    return { error: err instanceof Error ? err.message : String(err) };
-  }
 }
 
 /**

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SITE, services, whatsappLink } from "@/lib/data";
+import { SITE as STATIC_SITE, services as staticServices } from "@/lib/data";
+import { whatsappHref, type SiteInfo } from "@/lib/content-utils";
 
 type FormState = {
   name: string;
@@ -15,7 +16,15 @@ type FormState = {
 
 const initial: FormState = { name: "", phone: "", email: "", service: "", quantity: "", deadline: "", details: "" };
 
-export default function QuoteForm() {
+interface Props {
+  /** Live site settings from the database. */
+  site?: SiteInfo;
+  /** Live services from the database. */
+  services?: { slug: string; tag: string }[];
+}
+
+export default function QuoteForm({ site = STATIC_SITE, services = staticServices }: Props = {}) {
+  const serviceList = services.length ? services : staticServices;
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -62,20 +71,20 @@ export default function QuoteForm() {
         <h3 className="mt-5 text-2xl font-black text-ink">Thank you, {form.name.split(" ")[0]}!</h3>
         <p className="mt-2 text-muted">
           Your quote request for <strong className="text-ink">{form.service}</strong> has been prepared.
-          Send it straight to our team and we will reply with pricing and turnaround — usually within a few hours
-          during opening hours ({SITE.hours}, {SITE.hoursDays}).
+          Send it straight to our team and we will reply with pricing and turnaround — usually within a few hours.
+          We are open {site.hours}, {site.hoursDays}.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a
-            href={whatsappLink(message)}
+            href={whatsappHref(site.whatsappNumber, message)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 text-sm font-black text-white transition hover:brightness-95"
           >
             Send via WhatsApp →
           </a>
-          <a href={`tel:${SITE.phones[0].tel}`} className="rounded-full border border-silver-light px-6 py-3 text-sm font-black text-ink transition hover:border-brand hover:text-brand">
-            Call {SITE.phones[0].display}
+          <a href={`tel:${site.phones[0]?.tel ?? ""}`} className="rounded-full border border-silver-light px-6 py-3 text-sm font-black text-ink transition hover:border-brand hover:text-brand">
+            Call {site.phones[0]?.display ?? site.whatsappDisplay}
           </a>
           <button type="button" onClick={() => { setSubmitted(false); setForm(initial); }} className="rounded-full px-4 py-3 text-sm font-bold text-muted hover:text-brand">
             Start another request
@@ -114,7 +123,7 @@ export default function QuoteForm() {
           <label className={label} htmlFor="q-service">Service *</label>
           <select id="q-service" className={`${field} mt-1.5`} value={form.service} onChange={set("service")} aria-invalid={!!errors.service}>
             <option value="">Select a service…</option>
-            {services.map((s) => (
+            {serviceList.map((s) => (
               <option key={s.slug} value={s.tag}>{s.tag}</option>
             ))}
             <option value="Design only">Design only — Need a Design?</option>

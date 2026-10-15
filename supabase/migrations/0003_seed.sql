@@ -10,8 +10,8 @@ VALUES (
   'Kabaprints',
   'Printshop + Design',
   'Kabaprints is a Marketing and Printing Agency that specialises in Advert production. We are dynamic and highly creative professionals. As a matter of policy, our primary motive is to see that our clients'' communication campaigns lead to great profits',
-  '9:00 am – 7:00 pm',
-  'Mondays – Saturdays',
+  '24/7',
+  'Monday – Sunday',
   '2348032961171',
   'hello@kabaprints.com',
   '[{"display":"0803 296 1171","tel":"+2348032961171"},{"display":"0915 281 2526","tel":"+2349152812526"}]'

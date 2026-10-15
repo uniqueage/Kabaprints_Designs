@@ -2,9 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { SITE } from "@/lib/data";
+import { SITE as STATIC_SITE } from "@/lib/data";
+import type { SiteInfo } from "@/lib/content-utils";
 
-export default function SignInForm() {
+interface Props {
+  /** Live site settings from the database. */
+  site?: SiteInfo;
+}
+
+export default function SignInForm({ site = STATIC_SITE }: Props = {}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -66,7 +72,7 @@ export default function SignInForm() {
           <input type="checkbox" className="h-4 w-4 rounded border-silver-light accent-brand" />
           Remember me
         </label>
-        <a href={`mailto:${SITE.email}?subject=Password%20reset`} className="font-bold text-brand hover:underline">Forgot password?</a>
+        <a href={`mailto:${site.email}?subject=Password%20reset`} className="font-bold text-brand hover:underline">Forgot password?</a>
       </div>
 
       <button type="submit" className="mt-6 w-full rounded-full bg-brand px-6 py-3.5 text-sm font-black text-white transition hover:bg-brand-dark">

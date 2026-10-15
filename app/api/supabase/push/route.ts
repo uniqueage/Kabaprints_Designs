@@ -58,20 +58,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseEnv, getSupabaseConfigStatus, isSupabaseConfigured } from "@/lib/supabase/env";
-import {
-  MIGRATION_FILES,
-  MIGRATION_0001_schema_sql,
-  MIGRATION_0002_rls_policies_sql,
-  MIGRATION_0003_seed_sql,
-} from "./migrations-bundle";
+import { MIGRATION_FILES, MIGRATIONS } from "./migrations-bundle";
 
 const MIGRATIONS_DIR = ""; // unused; SQL is inlined
 
 function loadMigration(name: string): string {
-  if (name === "0001_schema.sql") return MIGRATION_0001_schema_sql;
-  if (name === "0002_rls_policies.sql") return MIGRATION_0002_rls_policies_sql;
-  if (name === "0003_seed.sql") return MIGRATION_0003_seed_sql;
-  throw new Error(`Unknown migration: ${name}`);
+  const migration = MIGRATIONS.find((m) => m.name === name);
+  if (!migration) throw new Error(`Unknown migration: ${name}`);
+  return migration.sql;
 }
 
 function migrationFiles(): string[] {

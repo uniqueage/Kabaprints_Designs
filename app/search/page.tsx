@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import SearchResults from "@/components/SearchResults";
+import { getSiteContent } from "@/lib/site-content";
+import { buildSearchIndex } from "@/lib/content-utils";
 
 export const metadata: Metadata = {
   title: "Search",
   description: "Search Kabaprints services, products and pages.",
 };
 
-export default function SearchPage() {
+export default async function SearchPage() {
+  const content = await getSiteContent();
+  // The index is built from live content so newly added services, products and
+  // portfolio pieces are searchable straight away.
+  const entries = buildSearchIndex(content);
+  const popular = content.services.flatMap((s) => [s.tag, ...s.items.map((i) => i.title)]).slice(0, 16);
+
   return (
     <section className="min-h-[60vh] bg-cream">
       <div className="bg-brand-deep py-10 text-white">
@@ -17,7 +25,7 @@ export default function SearchPage() {
         </div>
       </div>
       <Suspense fallback={<p className="mx-auto max-w-4xl px-4 py-12 text-muted">Loading search…</p>}>
-        <SearchResults />
+        <SearchResults entries={entries} popular={popular} />
       </Suspense>
     </section>
   );

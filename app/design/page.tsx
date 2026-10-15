@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { designProcess, designServices, whatsappLink } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
+import { whatsappHref } from "@/lib/content-utils";
 
 export const metadata: Metadata = {
   title: "Need a Design?",
@@ -17,7 +18,12 @@ const deliverables = [
   "Free re-export when specs change before press",
 ];
 
-export default function DesignPage() {
+export default async function DesignPage() {
+  const content = await getSiteContent();
+  const designServices = content.designServices;
+  const designProcess = content.designProcess;
+  const SITE = content.site;
+
   return (
     <>
       <section className="relative overflow-hidden bg-coral-dark py-16 text-white sm:py-20">
@@ -37,7 +43,7 @@ export default function DesignPage() {
             born ready for the press — so nothing is lost between design and production.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={whatsappLink("Hello Kabaprints! I need a design. Here is what I have in mind:")} target="_blank" rel="noopener noreferrer" className="rounded-full bg-white px-6 py-3.5 text-sm font-black text-coral-dark transition hover:bg-cream">
+            <a href={whatsappHref(SITE.whatsappNumber, "Hello Kabaprints! I need a design. Here is what I have in mind:")} target="_blank" rel="noopener noreferrer" className="rounded-full bg-white px-6 py-3.5 text-sm font-black text-coral-dark transition hover:bg-cream">
               Brief us on WhatsApp
             </a>
             <Link href="/quote" className="rounded-full border border-white/40 px-6 py-3.5 text-sm font-black transition hover:bg-white/10">

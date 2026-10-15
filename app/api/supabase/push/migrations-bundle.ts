@@ -3,7 +3,7 @@
 // Regenerate by running: node scripts/bundle-migrations.mjs
 // Source of truth: supabase/migrations/*.sql
 //
-// NOTE: 0003_seed.sql contains VACUUM ANALYZE statements which cannot run
+// NOTE: some migrations contain VACUUM ANALYZE statements which cannot run
 // inside a transaction. Runners that wrap each migration in BEGIN..COMMIT must
 // execute the VACUUM statements outside the transaction (see push-schema.mjs
 // and the Vercel push route).
@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
   site_name       text NOT NULL DEFAULT 'Kabaprints',
   tagline         text NOT NULL DEFAULT 'Printshop + Design',
   vision          text NOT NULL DEFAULT 'Kabaprints is a Marketing and Printing Agency that specialises in Advert production. We are dynamic and highly creative professionals. As a matter of policy, our primary motive is to see that our clients'' communication campaigns lead to great profits',
-  hours           text NOT NULL DEFAULT '9:00 am – 7:00 pm',
-  hours_days      text NOT NULL DEFAULT 'Mondays – Saturdays',
+  hours           text NOT NULL DEFAULT '24/7',
+  hours_days      text NOT NULL DEFAULT 'Monday – Sunday',
   whatsapp_number text NOT NULL DEFAULT '2348032961171',
   email           text NOT NULL DEFAULT 'hello@kabaprints.com',
   phones_json     jsonb NOT NULL DEFAULT '[{"display":"0803 296 1171","tel":"+2348032961171"},{"display":"0915 281 2526","tel":"+2349152812526"}]',
@@ -490,8 +490,8 @@ VALUES (
   'Kabaprints',
   'Printshop + Design',
   'Kabaprints is a Marketing and Printing Agency that specialises in Advert production. We are dynamic and highly creative professionals. As a matter of policy, our primary motive is to see that our clients'' communication campaigns lead to great profits',
-  '9:00 am – 7:00 pm',
-  'Mondays – Saturdays',
+  '24/7',
+  'Monday – Sunday',
   '2348032961171',
   'hello@kabaprints.com',
   '[{"display":"0803 296 1171","tel":"+2348032961171"},{"display":"0915 281 2526","tel":"+2349152812526"}]'
@@ -679,4 +679,62 @@ VALUES
 ON CONFLICT DO NOTHING;
 `;
 
-export const MIGRATION_FILES = ["0001_schema.sql","0002_rls_policies.sql","0003_seed.sql"];
+export const MIGRATION_0004_open_24_7_sql = `-- ============================================================
+-- 0004 — open 24/7 + auth trigger fix (idempotent; safe to re-run)
+-- Project: https://ccabevypxuwzpbagkiji.supabase.co
+--
+-- 1. Opening hours: the shop now trades 24 hours a day, 7 days a week.
+--    Rows seeded with the old "9:00 am – 7:00 pm / Mondays – Saturdays" values
+--    are updated. Different values (i.e. ones the owner has since chosen in
+--    Admin → Settings) are left untouched.
+--
+-- 2. handle_new_user(): the trigger referenced a non-existent column
+--    (\`raw_user_meta_\`) which made every new signup fail. \`raw_user_meta_data\`
+--    is the correct column on auth.users.
+-- ============================================================
+
+UPDATE public.site_settings
+SET hours = '24/7',
+    hours_days = 'Monday – Sunday',
+    updated_at = now()
+WHERE hours IN ('9:00 am – 7:00 pm', '9:00am – 7:00pm', '9am – 7pm', '9am - 7pm')
+   OR hours_days IN ('Mondays – Saturdays', 'Monday – Saturday', 'Mon - Sat', 'Mon – Sat');
+
+-- Make the table default match too (only affects brand-new rows).
+ALTER TABLE public.site_settings ALTER COLUMN hours SET DEFAULT '24/7';
+ALTER TABLE public.site_settings ALTER COLUMN hours_days SET DEFAULT 'Monday – Sunday';
+
+-- ---------- auth trigger fix ----------
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, display_name, phone, role)
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data ->> 'display_name', split_part(NEW.email, '@', 1)),
+    NEW.raw_user_meta_data ->> 'phone',
+    'customer'
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+VACUUM ANALYZE public.site_settings;
+`;
+
+/** Ordered list of the bundled migrations. */
+export const MIGRATIONS: { name: string; sql: string }[] = [
+  { name: "0001_schema.sql", sql: MIGRATION_0001_schema_sql },
+  { name: "0002_rls_policies.sql", sql: MIGRATION_0002_rls_policies_sql },
+  { name: "0003_seed.sql", sql: MIGRATION_0003_seed_sql },
+  { name: "0004_open_24_7.sql", sql: MIGRATION_0004_open_24_7_sql },
+];
+
+/** Names of the bundled migrations, in order. */
+export const MIGRATION_FILES: string[] = MIGRATIONS.map((m) => m.name);

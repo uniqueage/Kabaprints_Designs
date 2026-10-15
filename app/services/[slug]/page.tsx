@@ -3,26 +3,27 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { getService, services, whatsappLink } from "@/lib/data";
-
-export function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
-}
+import { getSiteContent } from "@/lib/site-content";
+import { whatsappHref } from "@/lib/content-utils";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const service = getService(slug);
+  const { services } = await getSiteContent();
+  const service = services.find((s) => s.slug === slug);
   if (!service) return { title: "Service not found" };
   return { title: service.tag, description: `${service.tagline} ${service.description}`.slice(0, 180) };
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = getService(slug);
+  const content = await getSiteContent();
+  const services = content.services;
+  const site = content.site;
+  const service = services.find((s) => s.slug === slug);
   if (!service) notFound();
 
   const index = services.findIndex((s) => s.slug === service.slug);
-  const next = services[(index + 1) % services.length];
+  const next = services[(index + 1) % services.length] ?? service;
 
   return (
     <>
@@ -49,7 +50,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/quote" className="rounded-full bg-coral px-6 py-3 text-sm font-black transition hover:bg-coral-dark">Get a Quote</Link>
             <Link href="/upload" className="rounded-full bg-white px-6 py-3 text-sm font-black text-brand-dark transition hover:bg-cream">Upload Design</Link>
-            <a href={whatsappLink(`Hello Kabaprints! I'm interested in your ${service.tag} service.`)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/35 px-6 py-3 text-sm font-black transition hover:bg-white/10">
+            <a href={whatsappHref(site.whatsappNumber, `Hello Kabaprints! I'm interested in your ${service.tag} service.`)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/35 px-6 py-3 text-sm font-black transition hover:bg-white/10">
               WhatsApp Us
             </a>
           </div>
@@ -81,27 +82,44 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
           <Reveal delay={100}>
             <div className="rounded-3xl bg-white p-6 ring-1 ring-silver-light">
-              <h3 className="text-sm font-black uppercase tracking-widest text-brand-dark">Best for</h3>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {service.bestFor.map((b) => (
-                  <li key={b} className="rounded-full bg-brand-light px-3 py-1.5 text-xs font-bold text-brand-dark">{b}</li>
-                ))}
-              </ul>
-              <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-brand-dark">Materials we print on</h3>
-              <ul className="mt-3 space-y-2 text-sm text-ink-soft">
-                {service.substrates.map((m) => (
-                  <li key={m} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" aria-hidden="true" />
-                    {m}
-                  </li>
-                ))}
-              </ul>
-              <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-brand-dark">Techniques</h3>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {service.techniques.map((t) => (
-                  <li key={t} className="rounded-full border border-silver-light px-3 py-1.5 text-xs font-semibold text-ink-soft">{t}</li>
-                ))}
-              </ul>
+              {service.bestFor.length > 0 && (
+                <>
+                  <h3 className="text-sm font-black uppercase tracking-widest text-brand-dark">Best for</h3>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {service.bestFor.map((b) => (
+                      <li key={b} className="rounded-full bg-brand-light px-3 py-1.5 text-xs font-bold text-brand-dark">{b}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {service.substrates.length > 0 && (
+                <>
+                  <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-brand-dark">Materials we print on</h3>
+                  <ul className="mt-3 space-y-2 text-sm text-ink-soft">
+                    {service.substrates.map((m) => (
+                      <li key={m} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" aria-hidden="true" />
+                        {m}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {service.techniques.length > 0 && (
+                <>
+                  <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-brand-dark">Techniques</h3>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {service.techniques.map((t) => (
+                      <li key={t} className="rounded-full border border-silver-light px-3 py-1.5 text-xs font-semibold text-ink-soft">{t}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {service.bestFor.length === 0 && service.substrates.length === 0 && service.techniques.length === 0 && (
+                <p className="text-sm text-muted">
+                  Ask us for the full material and technique list for this service — we will send it over with your quote.
+                </p>
+              )}
             </div>
           </Reveal>
         </div>

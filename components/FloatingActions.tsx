@@ -1,4 +1,5 @@
-import { SITE, whatsappLink } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
+import { whatsappHref } from "@/lib/content-utils";
 
 function WhatsAppIcon({ className = "h-6 w-6" }: { className?: string }) {
   return (
@@ -17,11 +18,13 @@ function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
 }
 
 /** Floating WhatsApp + Call buttons, pinned to the bottom-right on every page. */
-export default function FloatingActions() {
+export default async function FloatingActions() {
+  const { site } = await getSiteContent();
+
   return (
     <div className="fixed bottom-5 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-7 sm:right-6">
       <a
-        href={whatsappLink()}
+        href={whatsappHref(site.whatsappNumber)}
         target="_blank"
         rel="noopener noreferrer"
         className="group relative flex items-center gap-3 rounded-full bg-whatsapp py-3 pl-3 pr-3 text-white shadow-lg shadow-black/20 transition hover:pr-5 sm:pr-4 sm:hover:pr-6"
@@ -36,7 +39,7 @@ export default function FloatingActions() {
 
       <div className="group relative flex flex-col items-end gap-2">
         <div className="hidden flex-col items-end gap-2 rounded-xl bg-white p-2 shadow-xl ring-1 ring-black/5 group-hover:flex">
-          {SITE.phones.map((p) => (
+          {site.phones.map((p) => (
             <a
               key={p.tel}
               href={`tel:${p.tel}`}
@@ -48,9 +51,9 @@ export default function FloatingActions() {
           ))}
         </div>
         <a
-          href={`tel:${SITE.phones[0].tel}`}
+          href={`tel:${site.phones[0]?.tel ?? ""}`}
           className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-black/20 transition hover:bg-brand-dark sm:h-14 sm:w-14"
-          aria-label={`Call Kabaprints on ${SITE.phones[0].display}`}
+          aria-label={`Call Kabaprints on ${site.phones[0]?.display ?? ""}`}
         >
           <PhoneIcon className="h-6 w-6" />
         </a>

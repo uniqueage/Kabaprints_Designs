@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
-import { SITE, whatsappLink } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
+import { whatsappHref } from "@/lib/content-utils";
 
-export const metadata: Metadata = {
-  title: "Contact & Open Hours",
-  description: "Call or WhatsApp Kabaprints — open 9:00 am to 7:00 pm, Mondays to Saturdays.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { site } = await getSiteContent();
+  return {
+    title: "Contact & Open Hours",
+    description: `Call or WhatsApp Kabaprints — open ${site.hours}, ${site.hoursDays}.`,
+  };
+}
 
 const includes = [
   "The service you need (transfer, screen, banners, branding…)",
@@ -16,7 +20,10 @@ const includes = [
   "Artwork file, or a link to your brief",
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const content = await getSiteContent();
+  const SITE = content.site;
+
   return (
     <>
       <section className="bg-brand-deep py-14 text-white sm:py-16">
@@ -47,7 +54,7 @@ export default function ContactPage() {
                     </a>
                   ))}
                 </div>
-                <p className="mt-4 text-xs text-muted">Lines are busiest 10am–1pm. Voicemails are returned the same day.</p>
+                <p className="mt-4 text-xs text-muted">We answer around the clock — WhatsApp is usually the fastest way to reach us.</p>
               </div>
             </Reveal>
 
@@ -58,7 +65,7 @@ export default function ContactPage() {
                 </span>
                 <h2 className="mt-4 text-lg font-black text-ink">WhatsApp {SITE.whatsappDisplay}</h2>
                 <p className="mt-2 text-sm text-ink-soft">Fastest way to send photos, sizes and get a same-day quote.</p>
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-whatsapp px-5 py-3 text-center text-sm font-black text-white transition hover:brightness-95">
+                <a href={whatsappHref(SITE.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-whatsapp px-5 py-3 text-center text-sm font-black text-white transition hover:brightness-95">
                   Start chatting →
                 </a>
               </div>
@@ -72,7 +79,7 @@ export default function ContactPage() {
                 <h2 className="mt-4 text-lg font-black">Open hours</h2>
                 <p className="mt-3 text-4xl font-black">{SITE.hours}</p>
                 <p className="text-white/85">{SITE.hoursDays}</p>
-                <p className="mt-4 text-sm text-white/60">Sunday: Closed. Online orders and uploads are accepted any time — processed from the next working day.</p>
+                <p className="mt-4 text-sm text-white/60">Open 24 hours a day, 7 days a week — including Sundays and public holidays. Online orders and uploads are accepted any time.</p>
                 <p className="mt-4 rounded-xl bg-white/10 p-3 text-xs text-white/80">
                   Walk-ins welcome — bring your design on a flash drive or send it ahead via the Upload page.
                 </p>
@@ -86,7 +93,7 @@ export default function ContactPage() {
                 <h2 className="text-xl font-black text-ink">Email</h2>
                 <a href={`mailto:${SITE.email}`} className="mt-2 inline-block text-lg font-bold text-brand hover:underline">{SITE.email}</a>
                 <p className="mt-3 text-sm text-muted">
-                  Great for artwork, PO numbers and long briefs. We reply within one working day.
+                  Great for artwork, PO numbers and long briefs. We reply within a few hours, every day of the week.
                 </p>
                 <a href={`mailto:${SITE.email}?subject=Print%20enquiry`} className="mt-5 inline-block rounded-full bg-ink px-6 py-3 text-sm font-black text-white transition hover:bg-brand">
                   Compose email →

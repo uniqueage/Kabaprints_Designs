@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Package, Plus, Trash2, Edit } from "@/lib/icons";
 import { listServices, listProductsForService } from "@/lib/supabase/admin";
-import { createSupabaseAdminClient } from "@/lib/supabase/client";
+import { resolveImage } from "@/lib/content-utils";
 import { deleteProductAction } from "./actions";
 import type { Service, Product } from "@/supabase/lib/types";
 
@@ -22,12 +22,9 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
   const servicesWithProducts: Array<{ service: Service; products: ProductWithImage[] }> = await Promise.all(
     services.map(async (s) => {
       const products = await listProductsForService(s.id);
-      const withImages = await Promise.all(
-        products.map(async (p) => ({
-          ...p,
-          imageUrl: p.image.startsWith("/") ? (await imagePublicUrl(p.image)) ?? null : p.image,
-        })),
-      );
+      // Bundled images resolve to /images/...; uploads resolve to their Supabase
+      // public URL. See resolveImage() in lib/content-utils.ts.
+      const withImages = products.map((p) => ({ ...p, imageUrl: resolveImage(p.image) || null }));
       return { service: s, products: withImages };
     }),
   );
@@ -85,16 +82,6 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
       )}
     </div>
   );
-}
-
-async function imagePublicUrl(path: string): Promise<string | null> {
-  try {
-    const admin = createSupabaseAdminClient();
-    const { data } = admin.storage.from("products-images").getPublicUrl(path);
-    return data?.publicUrl ?? null;
-  } catch {
-    return null;
-  }
 }
 
 function Section({ service, products }: { service: Service; products: ProductWithImage[] }) {
@@ -166,7 +153,7 @@ function ProductRow({ product }: { product: ProductWithImage }) {
 
 function DeleteButton({ productId }: { productId: string }) {
   return (
-    <form action={async (formData: FormData) => {
+    <form action={async () => {
       "use server";
       await deleteProductAction(productId);
     }}>
@@ -181,4 +168,3 @@ function DeleteButton({ productId }: { productId: string }) {
   );
 }
 
-import { redirect } from "next/navigation";

@@ -4,7 +4,8 @@ import Testimonials from "@/components/Testimonials";
 import Reveal from "@/components/Reveal";
 import CtaBand from "@/components/CtaBand";
 import BeforeAfterSlider from "@/components/BeforeAfter";
-import { SITE, beforeAfter, services, whatsappLink } from "@/lib/data";
+import { getSiteContent } from "@/lib/site-content";
+import { whatsappHref } from "@/lib/content-utils";
 
 const toolCards = [
   {
@@ -30,10 +31,16 @@ const toolCards = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Live content from the admin dashboard, with static fallbacks built in.
+  const content = await getSiteContent();
+  const SITE = content.site;
+  const services = content.services;
+  const beforeAfter = content.beforeAfter;
+
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel slides={content.heroSlides} serviceCount={services.length} hours={SITE.hours} />
 
       {/* marquee of service tags */}
       <div className="overflow-hidden border-y border-silver-light bg-white py-3">
@@ -59,7 +66,7 @@ export default function HomePage() {
               <div className="max-w-2xl">
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Our Services</p>
                 <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-                  Seven service tags. One printshop.
+                  {services.length} service tags. One printshop.
                 </h2>
                 <p className="mt-3 text-muted">
                   Every tag below is its own page — with the products, details and sample work inside.
@@ -125,7 +132,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-6 flex flex-col gap-2">
                   <Link href="/quote" className="rounded-full bg-coral px-5 py-3 text-center text-sm font-black transition hover:bg-coral-dark">Request a quote</Link>
-                  <a href={whatsappLink("Hello Kabaprints! I have a custom print request.")} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/25 px-5 py-3 text-center text-sm font-bold transition hover:bg-white/10">
+                  <a href={whatsappHref(SITE.whatsappNumber, "Hello Kabaprints! I have a custom print request.")} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/25 px-5 py-3 text-center text-sm font-bold transition hover:bg-white/10">
                     Chat with us
                   </a>
                 </div>
@@ -203,7 +210,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Testimonials />
+      <Testimonials items={content.testimonials} />
 
       {/* OPEN HOURS + CONTACT */}
       <section className="py-16 sm:py-20" aria-label="Open hours and contact">
@@ -245,7 +252,7 @@ export default function HomePage() {
                   </ul>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="rounded-full bg-whatsapp px-6 py-3 text-sm font-black text-white transition hover:brightness-95">
+                  <a href={whatsappHref(SITE.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="rounded-full bg-whatsapp px-6 py-3 text-sm font-black text-white transition hover:brightness-95">
                     WhatsApp {SITE.whatsappDisplay}
                   </a>
                   <Link href="/contact" className="rounded-full border border-silver-light px-6 py-3 text-sm font-black text-ink transition hover:border-brand hover:text-brand">

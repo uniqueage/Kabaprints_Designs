@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { testimonials } from "@/lib/data";
+import { testimonials as staticTestimonials } from "@/lib/data";
+import type { Testimonial } from "@/lib/data";
 
-export default function Testimonials() {
+interface Props {
+  /** Live testimonials from the admin dashboard (falls back to the static set). */
+  items: Testimonial[];
+}
+
+export default function Testimonials({ items }: Props) {
+  // Rendered from the database when available, otherwise from the static set.
+  const testimonials = items.length ? items : staticTestimonials;
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -11,7 +19,7 @@ export default function Testimonials() {
     if (paused) return;
     const t = setInterval(() => setIndex((i) => (i + 1) % testimonials.length), 6500);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, testimonials.length]);
 
   const t = testimonials[index];
 

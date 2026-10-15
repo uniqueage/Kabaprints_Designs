@@ -3,9 +3,16 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { buildSearchIndex, services } from "@/lib/data";
+import type { SearchEntry } from "@/lib/data";
 
-export default function SearchResults() {
+interface Props {
+  /** Index built from live content (services, products, portfolio, pages). */
+  entries: SearchEntry[];
+  /** Terms shown as quick chips when the query is empty. */
+  popular: string[];
+}
+
+export default function SearchResults({ entries, popular }: Props) {
   const params = useSearchParams();
   const router = useRouter();
   const initial = params.get("q") ?? "";
@@ -13,12 +20,11 @@ export default function SearchResults() {
   const q = query.trim().toLowerCase();
 
   const results = useMemo(() => {
-    const index = buildSearchIndex();
     if (!q) return [];
-    return index.filter((entry) =>
+    return entries.filter((entry) =>
       `${entry.title} ${entry.description} ${entry.type}`.toLowerCase().includes(q)
     );
-  }, [q]);
+  }, [q, entries]);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -54,7 +60,7 @@ export default function SearchResults() {
         <div className="mt-10">
           <h2 className="text-sm font-black uppercase tracking-widest text-brand-dark">Popular searches</h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {services.flatMap((s) => [s.tag, ...s.items.map((i) => i.title)]).map((term) => (
+            {popular.map((term) => (
               <button key={term} type="button" onClick={() => setQuery(term)} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-ink-soft ring-1 ring-silver-light transition hover:bg-brand hover:text-white hover:ring-brand">
                 {term}
               </button>

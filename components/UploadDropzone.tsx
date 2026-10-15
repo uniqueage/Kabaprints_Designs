@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { SITE, whatsappLink } from "@/lib/data";
+import { SITE as STATIC_SITE } from "@/lib/data";
+import { whatsappHref, type SiteInfo } from "@/lib/content-utils";
 
 const SUPPORTED = [".png", ".jpg", ".jpeg", ".pdf", ".svg"];
 const SUPPORTED_LABELS = [
@@ -32,7 +33,12 @@ function fmtSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function UploadDropzone() {
+interface Props {
+  /** Live site settings from the database. */
+  site?: SiteInfo;
+}
+
+export default function UploadDropzone({ site = STATIC_SITE }: Props = {}) {
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -177,7 +183,7 @@ export default function UploadDropzone() {
             </button>
             {doneCount > 0 && (
               <a
-                href={whatsappLink(`Hello Kabaprints! I have uploaded ${doneCount} design file(s) for printing: ${files.filter((f) => f.status === "done").map((f) => f.name).join(", ")}`)}
+                href={whatsappHref(site.whatsappNumber, `Hello Kabaprints! I have uploaded ${doneCount} design file(s) for printing: ${files.filter((f) => f.status === "done").map((f) => f.name).join(", ")}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full bg-whatsapp px-6 py-3 text-sm font-black text-white transition hover:brightness-95"
@@ -204,7 +210,7 @@ export default function UploadDropzone() {
 
       <p className="mt-6 rounded-2xl bg-cream p-4 text-xs leading-relaxed text-muted ring-1 ring-silver-light">
         Tips for the crispest print: vector (SVG) or PDF at 300 DPI with 3mm bleed and fonts outlined.
-        Need help preparing your file? <a href={whatsappLink("Hello Kabaprints! Please help me prepare my artwork for printing.")} target="_blank" rel="noopener noreferrer" className="font-bold text-brand hover:underline">Ask us on WhatsApp</a> or call {SITE.phones[0].display}.
+        Need help preparing your file? <a href={whatsappHref(site.whatsappNumber, "Hello Kabaprints! Please help me prepare my artwork for printing.")} target="_blank" rel="noopener noreferrer" className="font-bold text-brand hover:underline">Ask us on WhatsApp</a> or call {site.phones[0]?.display ?? site.whatsappDisplay}.
       </p>
     </div>
   );

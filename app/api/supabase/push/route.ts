@@ -37,7 +37,9 @@
  *  - The endpoint is protected by a shared secret header
  *    `x-supabase-push-secret` whose value you set in Vercel as the env var
  *    SUPABASE_PUSH_SECRET (and as a request header when you call it).
- *  - Without matching that secret the endpoint returns 401.
+ *  - Without a matching secret the endpoint returns 401. If
+ *    SUPABASE_PUSH_SECRET is not configured at all, execution is refused with
+ *    503 — configuring a token alone never makes this route runnable.
  *  - The PAT and service role key never leave the server.
  *  - The response includes a summary but never the raw keys.
  *
@@ -233,9 +235,24 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const secret = request.headers.get(PUSH_SECRET_HEADER);
+  // This endpoint runs arbitrary SQL with a Management API token, so it must
+  // never be executable without the shared secret. Refuse outright when the
+  // secret is missing rather than falling back to "open" — otherwise adding
+  // SUPABASE_PUSH_TOKEN alone would expose a schema-running endpoint to anyone
+  // who knows the URL.
+  const configuredSecret = process.env.SUPABASE_PUSH_SECRET;
+  if (!configuredSecret) {
+    return NextResponse.json(
+      {
+        error:
+          "Refusing to execute: SUPABASE_PUSH_SECRET is not set. Set it in Vercel → Project Settings → Environment Variables, then call this route with the matching x-supabase-push-secret header.",
+      },
+      { status: 503 }
+    );
+  }
 
-  if (process.env.SUPABASE_PUSH_SECRET && secret !== process.env.SUPABASE_PUSH_SECRET) {
+  const secret = request.headers.get(PUSH_SECRET_HEADER);
+  if (secret !== configuredSecret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -301,10 +318,12 @@ export async function GET() {
     pushTokenConfigured: !!pushToken,
     environment: process.env.SUPABASE_PUSH_SECRET
       ? "gated"
-      : "open (no SUPABASE_PUSH_SECRET set — not recommended for production)",
-    executionReady: !!pushToken,
-    note: pushToken
-      ? "Ready to execute."
-      : "Add SUPABASE_PUSH_TOKEN (Supabase PAT, database:write) to execute.",
+      : "open (no SUPABASE_PUSH_SECRET set — execution is refused)",
+    executionReady: !!pushToken && !!process.env.SUPABASE_PUSH_SECRET,
+    note: !pushToken
+      ? "Add SUPABASE_PUSH_TOKEN (Supabase PAT, database:write) to execute."
+      : !process.env.SUPABASE_PUSH_SECRET
+        ? "Add SUPABASE_PUSH_SECRET to enable execution."
+        : "Ready to execute.",
   });
 }

@@ -18,7 +18,7 @@ export default async function CtaBand({
       <div className="pointer-events-none absolute -bottom-20 left-10 h-64 w-64 rounded-full bg-brand-mid/40 blur-3xl" aria-hidden="true" />
       <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-8 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-black tracking-tight sm:text-4xl">{title}</h2>
+          <h2 className="text-2xl font-black tracking-tight sm:text-3xl">{title}</h2>
           <p className="mt-3 text-white/80">{body}</p>
         </div>
         <div className="flex flex-wrap gap-3">

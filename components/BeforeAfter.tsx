@@ -64,12 +64,12 @@ export default function BeforeAfterSlider({ pair }: { pair: Pair }) {
 
       <figcaption className="p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-lg font-black text-ink">{pair.title}</h3>
+          <h3 className="text-base font-black text-ink">{pair.title}</h3>
           <a href={pair.href} className="rounded-full bg-brand-light px-3 py-1 text-xs font-black uppercase tracking-wider text-brand-dark transition hover:bg-brand hover:text-white">
             {pair.service}
           </a>
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{pair.note}</p>
+        <p className="mt-2 text-xs leading-relaxed text-muted">{pair.note}</p>
       </figcaption>
     </figure>
   );

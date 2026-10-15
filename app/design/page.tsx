@@ -35,10 +35,10 @@ export default async function DesignPage() {
           <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.3em]">
             Design Studio
           </span>
-          <h1 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
             Need a design? <span className="font-display font-medium italic">We draw, you grow.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-white/85">
+          <p className="mt-4 max-w-2xl text-base text-white/85">
             No artwork? No problem. Our in-house creatives build logos, campaigns and print layouts that are
             born ready for the press — so nothing is lost between design and production.
           </p>
@@ -58,7 +58,7 @@ export default async function DesignPage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">What we design</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Creative services</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Creative services</h2>
             </div>
           </Reveal>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -84,7 +84,7 @@ export default async function DesignPage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">How it works</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Four steps to finished artwork</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Four steps to finished artwork</h2>
             </div>
           </Reveal>
           <ol className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

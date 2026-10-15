@@ -68,7 +68,7 @@ export default function QuoteForm({ site = STATIC_SITE, services = staticService
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp/15 text-whatsapp">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-7 w-7" aria-hidden="true"><path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </span>
-        <h3 className="mt-5 text-2xl font-black text-ink">Thank you, {form.name.split(" ")[0]}!</h3>
+        <h3 className="mt-5 text-xl font-black text-ink">Thank you, {form.name.split(" ")[0]}!</h3>
         <p className="mt-2 text-muted">
           Your quote request for <strong className="text-ink">{form.service}</strong> has been prepared.
           Send it straight to our team and we will reply with pricing and turnaround — usually within a few hours.
@@ -100,7 +100,7 @@ export default function QuoteForm({ site = STATIC_SITE, services = staticService
 
   return (
     <form onSubmit={onSubmit} noValidate className="rounded-3xl bg-white p-6 shadow-xl ring-1 ring-silver-light sm:p-8">
-      <h3 className="text-xl font-black text-ink">Request your quote</h3>
+      <h3 className="text-base font-black text-ink">Request your quote</h3>
       <p className="mt-1 text-sm text-muted">Fill this in and we will get back to you the same day.</p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">

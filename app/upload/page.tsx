@@ -28,7 +28,7 @@ export default async function UploadPage() {
           <nav aria-label="Breadcrumb" className="text-xs text-white/60">
             <Link href="/" className="hover:text-coral">Home</Link> <span className="mx-1">/</span> <span className="text-white">Upload Design</span>
           </nav>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Upload your design</h1>
+          <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Upload your design</h1>
           <p className="mt-3 max-w-2xl text-white/75">
             Send us your artwork for printing. We accept PNG, JPG/JPEG, PDF and SVG files — proofed by our team
             before anything goes to press.

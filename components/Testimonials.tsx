@@ -34,7 +34,7 @@ export default function Testimonials({ items }: Props) {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Testimonials</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">What our clients say</h2>
+            <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">What our clients say</h2>
           </div>
           <div className="flex gap-2">
             <button type="button" onClick={() => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)} aria-label="Previous testimonial" className="flex h-10 w-10 items-center justify-center rounded-full border border-brand/20 bg-white text-brand transition hover:bg-brand hover:text-white">
@@ -51,7 +51,7 @@ export default function Testimonials({ items }: Props) {
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-9 w-9 text-coral/40" aria-hidden="true">
               <path d="M9.5 5C6.5 6.6 4.5 9.6 4.5 13v6h6v-6H7.5c0-2.3 1-4.2 3-5.3L9.5 5zm10 0c-3 1.6-5 4.6-5 8v6h6v-6h-3c0-2.3 1-4.2 3-5.3L19.5 5z" />
             </svg>
-            <blockquote key={index} className="animate-fade-up mt-4 text-lg font-medium leading-relaxed text-ink sm:text-xl">
+            <blockquote key={index} className="animate-fade-up mt-4 text-base font-medium leading-relaxed text-ink sm:text-lg">
               “{t.quote}”
             </blockquote>
             <figcaption className="mt-6 flex items-center gap-4">

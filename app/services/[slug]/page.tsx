@@ -42,11 +42,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <span className="mx-1.5">/</span>
             <span className="text-white">{service.tag}</span>
           </nav>
-          <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-coral/50 bg-coral/15 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.3em] text-coral">
+          <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-coral/50 bg-coral/15 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.3em] text-coral">
             Service 0{index + 1}
           </span>
-          <h1 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">{service.tag}</h1>
-          <p className="mt-4 max-w-2xl text-lg text-white/80">{service.tagline}</p>
+          <h1 className="mt-4 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{service.tag}</h1>
+          <p className="mt-4 max-w-2xl text-base text-white/80">{service.tagline}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/quote" className="rounded-full bg-coral px-6 py-3 text-sm font-black transition hover:bg-coral-dark">Get a Quote</Link>
             <Link href="/upload" className="rounded-full bg-white px-6 py-3 text-sm font-black text-brand-dark transition hover:bg-cream">Upload Design</Link>
@@ -63,7 +63,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <Reveal>
             <div>
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">What it is</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight">{service.tag}, done properly</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight">{service.tag}, done properly</h2>
               <p className="mt-4 leading-relaxed text-ink-soft">{service.description}</p>
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 {[
@@ -72,7 +72,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                   { k: "Products", v: service.items.length },
                 ].map((stat) => (
                   <div key={stat.k} className="rounded-2xl bg-white p-5 ring-1 ring-silver-light">
-                    <p className="text-3xl font-black text-brand">{stat.v}<span className="text-coral">+</span></p>
+                    <p className="text-2xl font-black text-brand">{stat.v}<span className="text-coral">+</span></p>
                     <p className="mt-1 text-xs font-bold uppercase tracking-widest text-muted">{stat.k}</p>
                   </div>
                 ))}
@@ -146,7 +146,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                     </span>
                   </div>
                   <div className="p-5">
-                    <h3 className="text-lg font-black text-ink transition group-hover:text-brand">{item.title}</h3>
+                    <h3 className="text-base font-black text-ink transition group-hover:text-brand">{item.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{item.blurb}</p>
                     <Link href="/quote" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-brand hover:underline">
                       Price this <span aria-hidden="true">→</span>

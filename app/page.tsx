@@ -65,7 +65,7 @@ export default async function HomePage() {
             <div className="flex flex-wrap items-end justify-between gap-5">
               <div className="max-w-2xl">
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Our Services</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">
                   {services.length} service tags. One printshop.
                 </h2>
                 <p className="mt-3 text-muted">
@@ -151,7 +151,7 @@ export default async function HomePage() {
           <svg viewBox="0 0 24 24" fill="currentColor" className="mx-auto mt-8 h-10 w-10 text-brand-mid/60" aria-hidden="true">
             <path d="M9.5 5C6.5 6.6 4.5 9.6 4.5 13v6h6v-6H7.5c0-2.3 1-4.2 3-5.3L9.5 5zm10 0c-3 1.6-5 4.6-5 8v6h6v-6h-3c0-2.3 1-4.2 3-5.3L19.5 5z" />
           </svg>
-          <p className="mt-8 text-2xl font-black leading-snug tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.25]">
+          <p className="mt-8 text-xl font-black leading-snug tracking-tight sm:text-2xl lg:text-3xl lg:leading-[1.3]">
             {SITE.vision}
           </p>
         </div>
@@ -163,7 +163,7 @@ export default async function HomePage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Essential Tools</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Everything you need, one click away</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Everything you need, one click away</h2>
             </div>
           </Reveal>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -192,7 +192,7 @@ export default async function HomePage() {
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Kabaprints Works</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Before &amp; after the press</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Before &amp; after the press</h2>
                 <p className="mt-3 max-w-xl text-muted">Drag the handle to see the transformation. Real projects, real finishes.</p>
               </div>
               <Link href="/portfolio" className="rounded-full border border-brand/25 px-5 py-2.5 text-sm font-bold text-brand transition hover:bg-brand hover:text-white">
@@ -220,7 +220,7 @@ export default async function HomePage() {
               <div className="flex h-full flex-col justify-between rounded-3xl bg-brand p-8 text-white sm:p-10">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Open Hours</p>
-                  <p className="mt-4 text-5xl font-black tracking-tight">{SITE.hours}</p>
+                  <p className="mt-4 text-3xl font-black tracking-tight">{SITE.hours}</p>
                   <p className="mt-2 text-xl font-semibold text-white/85">{SITE.hoursDays}</p>
                   <p className="mt-4 text-sm text-white/60">Walk-ins welcome · Orders accepted any time online</p>
                 </div>
@@ -238,7 +238,7 @@ export default async function HomePage() {
               <div className="flex h-full flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-silver-light sm:p-10">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Let&apos;s talk</p>
-                  <h2 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">
+                  <h2 className="mt-3 text-xl font-black tracking-tight sm:text-2xl">
                     Questions? We reply fast.
                   </h2>
                   <p className="mt-3 text-muted">

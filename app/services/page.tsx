@@ -21,7 +21,7 @@ export default async function ServicesPage() {
           <nav aria-label="Breadcrumb" className="text-xs text-white/60">
             <Link href="/" className="hover:text-coral">Home</Link> <span className="mx-1">/</span> <span className="text-white">Services</span>
           </nav>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Our Services</h1>
+          <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Our Services</h1>
           <p className="mt-3 max-w-2xl text-white/75">
             {services.length} dedicated service pages covering apparel, bulk printing, large format, vehicles,
             engraving and signage — plus the odd special request.
@@ -52,7 +52,7 @@ export default async function ServicesPage() {
                   </div>
                   <div className="flex flex-col justify-center p-7 sm:p-9">
                     <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">{s.tag}</p>
-                    <h2 className="mt-2 text-2xl font-black tracking-tight transition group-hover:text-brand sm:text-3xl">{s.tagline}</h2>
+                    <h2 className="mt-2 text-xl font-black tracking-tight transition group-hover:text-brand sm:text-2xl">{s.tagline}</h2>
                     <p className="mt-3 text-sm leading-relaxed text-muted line-clamp-3">{s.description}</p>
                     <ul className="mt-4 flex flex-wrap gap-1.5">
                       {s.items.slice(0, 4).map((item) => (

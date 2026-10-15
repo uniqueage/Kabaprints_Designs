@@ -53,12 +53,12 @@ export default function HeroCarousel({ slides, serviceCount, hours }: Props) {
             Printshop <span className="text-white">+</span> Design
           </span>
 
-          <h1 className="mt-5 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl xl:text-6xl">
+          <h1 className="mt-5 text-3xl font-black leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
             Prints that turn heads.
             <span className="block font-display font-medium italic text-coral">Designs that win hearts.</span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
             Kabaprints is your one-stop printshop for apparel printing, banners, vehicle branding,
             engraving and signage — produced in-house, checked twice and delivered on time.
           </p>
@@ -78,15 +78,15 @@ export default function HeroCarousel({ slides, serviceCount, hours }: Props) {
           <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-white/15 pt-6">
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Services</dt>
-              <dd className="text-2xl font-black">{serviceCount}<span className="text-coral">+</span></dd>
+              <dd className="text-xl font-black">{serviceCount}<span className="text-coral">+</span></dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Open</dt>
-              <dd className="text-2xl font-black">{hours}</dd>
+              <dd className="text-xl font-black">{hours}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-white/50">Since</dt>
-              <dd className="text-2xl font-black">Day 1</dd>
+              <dd className="text-xl font-black">Day 1</dd>
             </div>
           </dl>
         </div>
@@ -110,7 +110,7 @@ export default function HeroCarousel({ slides, serviceCount, hours }: Props) {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0" key={slide.href}>
                   <p className="animate-fade-up text-[10px] font-black uppercase tracking-[0.28em] text-coral">{slide.eyebrow}</p>
-                  <h2 className="animate-fade-up mt-1.5 text-base font-extrabold leading-snug sm:text-lg" style={{ animationDelay: "60ms" }}>
+                  <h2 className="animate-fade-up mt-1.5 text-sm font-extrabold leading-snug sm:text-base" style={{ animationDelay: "60ms" }}>
                     {slide.title}
                   </h2>
                   <p className="animate-fade-up mt-1.5 hidden text-sm leading-relaxed text-white/70 sm:block" style={{ animationDelay: "120ms" }}>

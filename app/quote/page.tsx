@@ -34,7 +34,7 @@ export default async function QuotePage() {
           <nav aria-label="Breadcrumb" className="text-xs text-white/60">
             <Link href="/" className="hover:text-coral">Home</Link> <span className="mx-1">/</span> <span className="text-white">Quote</span>
           </nav>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Get a Quote</h1>
+          <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Get a Quote</h1>
           <p className="mt-3 max-w-2xl text-white/75">
             Everything you need before you order: what a quote is, what we can print, the sizes and colours
             available, and sample projects we have delivered.
@@ -56,7 +56,7 @@ export default async function QuotePage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">What it is</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">A Kabaprints quote, explained</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">A Kabaprints quote, explained</h2>
               <p className="mt-4 leading-relaxed text-ink-soft">
                 A quote is your fixed, written price for a print job — covering design, materials, printing,
                 finishing and delivery — valid for 7 days. It costs nothing and commits you to nothing.
@@ -93,7 +93,7 @@ export default async function QuotePage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">What can be printed</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Materials we print on</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Materials we print on</h2>
             </div>
           </Reveal>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -116,7 +116,7 @@ export default async function QuotePage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Available sizes</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Standard sizes &amp; custom cuts</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Standard sizes &amp; custom cuts</h2>
               <p className="mt-3 text-muted">Anything not listed can be custom-quoted — we cut to your dimensions.</p>
             </div>
           </Reveal>
@@ -146,7 +146,7 @@ export default async function QuotePage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Available colours</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Colours you can print in</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Colours you can print in</h2>
             </div>
           </Reveal>
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
@@ -180,7 +180,7 @@ export default async function QuotePage() {
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div className="max-w-2xl">
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Sample projects</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Recent work at a glance</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Recent work at a glance</h2>
               </div>
               <Link href="/portfolio" className="rounded-full border border-brand/25 px-5 py-2.5 text-sm font-bold text-brand transition hover:bg-brand hover:text-white">
                 Full portfolio →
@@ -215,7 +215,7 @@ export default async function QuotePage() {
           <aside className="space-y-5">
             <div className="rounded-3xl bg-brand p-6 text-white">
               <h3 className="text-lg font-black">Open hours</h3>
-              <p className="mt-3 text-3xl font-black">{SITE.hours}</p>
+              <p className="mt-3 text-2xl font-black">{SITE.hours}</p>
               <p className="text-white/80">{SITE.hoursDays}</p>
               <p className="mt-4 text-sm text-white/60">Open around the clock — quote requests are answered the same day, any day of the week.</p>
             </div>

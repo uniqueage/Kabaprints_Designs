@@ -23,7 +23,7 @@ export default async function PortfolioPage() {
           <nav aria-label="Breadcrumb" className="text-xs text-white/60">
             <Link href="/" className="hover:text-coral">Home</Link> <span className="mx-1">/</span> <span className="text-white">Portfolio</span>
           </nav>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
             Kabaprints <span className="font-display font-medium italic text-coral">works</span>
           </h1>
           <p className="mt-3 max-w-2xl text-white/75">
@@ -44,7 +44,7 @@ export default async function PortfolioPage() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">Before &amp; after</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Drag to reveal the difference</h2>
+              <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Drag to reveal the difference</h2>
               <p className="mt-3 text-muted">Plain product on the left, finished Kabaprints job on the right.</p>
             </div>
           </Reveal>
@@ -65,7 +65,7 @@ export default async function PortfolioPage() {
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div className="max-w-2xl">
                 <p className="text-xs font-black uppercase tracking-[0.3em] text-coral">The works</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Kabaprints works gallery</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Kabaprints works gallery</h2>
               </div>
               <span className="rounded-full bg-cream px-4 py-2 text-xs font-bold text-muted ring-1 ring-silver-light">
                 {portfolioWorks.length} projects
